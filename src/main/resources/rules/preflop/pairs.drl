@@ -1,0 +1,13 @@
+package preflop;
+
+import rs.ac.uns.ftn.Player;
+import rs.ac.uns.ftn.handranking.Card;
+
+rule "high pairs"
+	when
+		Player( (holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank == Card.RANK_ACE) ||
+				(holeCards.firstCard.rank == Card.RANK_KING && holeCards.secondCard.rank == Card.RANK_KING) || 
+				(holeCards.firstCard.rank == Card.RANK_QUEEN && holeCards.secondCard.rank == Card.RANK_QUEEN))
+	then
+		System.out.println("Player has high pairs");
+end
