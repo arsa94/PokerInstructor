@@ -55,10 +55,13 @@ public class Card implements Comparable<Card>{
                                     RANK_KING, RANK_ACE };
     
     // Card suit
-    private final int suit;
+    private int suit;
     // Card rank
-    private final int rank;
-    
+    private int rank;
+
+    public Card() {
+    }
+
     /**
      * Card constructur
      * @param suit The suit of the card
@@ -83,6 +86,14 @@ public class Card implements Comparable<Card>{
      */
     public int getRank(){
         return this.rank;
+    }
+
+    public void setSuit(int suit) {
+        this.suit = suit;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     @Override
