@@ -1,23 +1,23 @@
 package rs.ac.uns.ftn.parser.converters;
 
 import com.beust.jcommander.IStringConverter;
-import rs.ac.uns.ftn.parser.model.Model;
+import rs.ac.uns.ftn.GameState;
 
 /**
  * Created by Micko on 29-Jun-17.
  */
-public class StateConverter implements IStringConverter<Model.State> {
+public class StateConverter implements IStringConverter<GameState.ROUND> {
 
-    public Model.State convert(String value) {
-        Model.State state = null;
+    public GameState.ROUND convert(String value) {
+        GameState.ROUND state = null;
         if(value.equalsIgnoreCase("s")){
-            state = Model.State.START;
+            state = GameState.ROUND.PREFLOP;
         }else if(value.equalsIgnoreCase("f")){
-            state = Model.State.FLOP;
+            state = GameState.ROUND.FLOP;
         }else if(value.equalsIgnoreCase("t")){
-            state = Model.State.TURN;
+            state = GameState.ROUND.TURN;
         }else if(value.equalsIgnoreCase("r")){
-            state = Model.State.RIVER;
+            state = GameState.ROUND.RIVER;
         }
 
         return state;

@@ -30,20 +30,22 @@ import java.util.Set;
  * @author Jellen Vermeir
  */
 public class GameState {
-    
-    private final static int ROUND_PREFLOP = 1;
-    private final static int ROUND_FLOP = 2;
-    private final static int ROUND_TURN = 3;
-    private final static int ROUND_RIVER = 4;
+
+    public enum ROUND {PREFLOP, FLOP, TURN, RIVER}
+    public enum PLAYER_POSITION {EARLY, MID, TURN, BLINDS}
+    public enum ACTIONS_BEFORE_PLAYER {ALL_FOLD, ONE_CALL, ONE_RAISE}
     
     private ArrayList<Player> players;
     private Deck remainingCards;
     private int nrPlayers;
-    private int currentRound;
+    private ROUND currentRound;
     
     private Set<Card> flop;
     private Card turn;
     private Card river;
+
+    private ACTIONS_BEFORE_PLAYER actionsBeforePlayer;
+    private PLAYER_POSITION playerPosition;
     
     /**
      * STUB
@@ -52,7 +54,7 @@ public class GameState {
     public GameState(){
         this.remainingCards = null;
         this.players = null;
-        this.currentRound = ROUND_PREFLOP;
+        this.currentRound = ROUND.PREFLOP;
     }
     
     /**
@@ -63,7 +65,7 @@ public class GameState {
     public GameState(int nrPlayers) throws HandRankingException{
         
         this.remainingCards = new Deck();
-        this.currentRound = ROUND_PREFLOP;
+        this.currentRound = ROUND.PREFLOP;
         
         this.players = new ArrayList<Player>();
         for(int i=0; i<nrPlayers; i++){
@@ -93,7 +95,7 @@ public class GameState {
      * Return the current round of the game.
      * @return The current round.
      */
-    public int getCurrentRound(){
+    public ROUND getCurrentRound(){
         return this.currentRound;
     }
     
@@ -144,7 +146,23 @@ public class GameState {
     public void setRiver(Card river){
         this.river = river;
     }
-    
+
+    public ACTIONS_BEFORE_PLAYER getActionsBeforePlayer() {
+        return actionsBeforePlayer;
+    }
+
+    public void setActionsBeforePlayer(ACTIONS_BEFORE_PLAYER actionsBeforePlayer) {
+        this.actionsBeforePlayer = actionsBeforePlayer;
+    }
+
+    public PLAYER_POSITION getPlayerPosition() {
+        return playerPosition;
+    }
+
+    public void setPlayerPosition(PLAYER_POSITION playerPosition) {
+        this.playerPosition = playerPosition;
+    }
+
     /**
      * Return the communitycards as a Set of Cards.
      * @return The communitycards or null if currentRoudn < ROUND_FLOP

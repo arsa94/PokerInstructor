@@ -62,7 +62,11 @@ public class Player {
         this.unknownCards.removeCard(c1);
         this.unknownCards.removeCard(c2);
     }
-    
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
     /**
      * Return the expected immediate strength of the Players Hand.
      * @return The handStrength

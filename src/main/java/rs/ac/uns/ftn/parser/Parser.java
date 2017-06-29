@@ -1,12 +1,12 @@
 package rs.ac.uns.ftn.parser;
 
 import com.beust.jcommander.Parameter;
+import rs.ac.uns.ftn.GameState;
 import rs.ac.uns.ftn.handranking.Card;
 import rs.ac.uns.ftn.parser.converters.ActionConverter;
 import rs.ac.uns.ftn.parser.converters.CardConverter;
 import rs.ac.uns.ftn.parser.converters.PositionConverter;
 import rs.ac.uns.ftn.parser.converters.StateConverter;
-import rs.ac.uns.ftn.parser.model.Model;
 
 import java.util.List;
 
@@ -20,13 +20,13 @@ public class Parser {
     private List<Card> cards;
 
     @Parameter(names = "-s", converter = StateConverter.class)
-    private Model.State state;
+    private GameState.ROUND state;
 
     @Parameter(names = "-p", converter = PositionConverter.class)
-    private Model.Position position;
+    private GameState.PLAYER_POSITION position;
 
     @Parameter(names = "-a", converter = ActionConverter.class)
-    private Model.Action action;
+    private GameState.ACTIONS_BEFORE_PLAYER action;
 
     @Parameter(names = "-pot")
     private Integer pot;
@@ -39,27 +39,27 @@ public class Parser {
         this.cards = cards;
     }
 
-    public Model.State getState() {
+    public GameState.ROUND getState() {
         return state;
     }
 
-    public void setState(Model.State state) {
+    public void setState(GameState.ROUND state) {
         this.state = state;
     }
 
-    public Model.Position getPosition() {
+    public GameState.PLAYER_POSITION getPosition() {
         return position;
     }
 
-    public void setPosition(Model.Position position) {
+    public void setPosition(GameState.PLAYER_POSITION position) {
         this.position = position;
     }
 
-    public Model.Action getAction() {
+    public GameState.ACTIONS_BEFORE_PLAYER getAction() {
         return action;
     }
 
-    public void setAction(Model.Action action) {
+    public void setAction(GameState.ACTIONS_BEFORE_PLAYER action) {
         this.action = action;
     }
 
