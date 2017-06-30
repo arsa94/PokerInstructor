@@ -1,0 +1,127 @@
+package preflop;
+
+import rs.ac.uns.ftn.Player;
+import rs.ac.uns.ftn.handranking.Card;
+import rs.ac.uns.ftn.GameState.ACTIONS_BEFORE_PLAYER;
+import rs.ac.uns.ftn.GameState.PLAYER_POSITION;
+import java.util.Arrays;
+
+rule "Suited Face Cards - All players fold - Early or Mid position"
+	when
+		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
+		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
+		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
+		        holeCards.firstCard.suit == holeCards.secondCard.suit),
+		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD,
+		        (gameState.playerPosition == PLAYER_POSITION.EARLY || gameState.playerPosition == PLAYER_POSITION.MID))
+	then
+		System.out.println("Suited Face Cards - All players fold - Early or Mid position - Fold");
+end
+
+rule "Suited Face Cards - All players fold - Late or Blinds position"
+	when
+		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
+		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
+		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
+		        holeCards.firstCard.suit == holeCards.secondCard.suit),
+		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD,
+		        (gameState.playerPosition == PLAYER_POSITION.LATE || gameState.playerPosition == PLAYER_POSITION.BLINDS))
+	then
+		System.out.println("Suited Face Cards - All players fold - Late or Blinds position - Raise");
+end
+
+rule "Suited Face Cards - One player called - Early position"
+	when
+		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
+		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
+		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
+		        holeCards.firstCard.suit == holeCards.secondCard.suit),
+		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL,
+		        (gameState.playerPosition == PLAYER_POSITION.EARLY))
+	then
+		System.out.println("Suited Face Cards - One player called - Early position - Fold");
+end
+
+rule "Suited Face Cards - One player called - Not Early position"
+	when
+		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
+		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
+		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
+		        holeCards.firstCard.suit == holeCards.secondCard.suit),
+		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL,
+		        (gameState.playerPosition != PLAYER_POSITION.EARLY))
+	then
+		System.out.println("Suited Face Cards - One player called - Not Early position - Call");
+end
+
+rule "Suited Face Cards - One player raised"
+	when
+		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
+		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
+		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
+		        holeCards.firstCard.suit == holeCards.secondCard.suit),
+		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+	then
+		System.out.println("Suited Face Cards - One player raised - Fold");
+end
+
+
+
+rule "Face Cards Offsuit - All players fold - Early or Mid position"
+	when
+		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
+		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
+		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
+		        holeCards.firstCard.suit != holeCards.secondCard.suit),
+		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD,
+		        (gameState.playerPosition == PLAYER_POSITION.EARLY || gameState.playerPosition == PLAYER_POSITION.MID))
+	then
+		System.out.println("Face Cards Offsuit - All players fold - Early or Mid position - Fold");
+end
+
+rule "Face Cards Offsuit - All players fold - Late or Blinds position"
+	when
+		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
+		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
+		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
+		        holeCards.firstCard.suit != holeCards.secondCard.suit),
+		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD,
+		        (gameState.playerPosition == PLAYER_POSITION.LATE || gameState.playerPosition == PLAYER_POSITION.BLINDS))
+	then
+		System.out.println("Face Cards Offsuit - All players fold - Late or Blinds position - Raise");
+end
+
+rule "Face Cards Offsuit - One player called - Not Blinds position"
+	when
+		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
+		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
+		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
+		        holeCards.firstCard.suit != holeCards.secondCard.suit),
+		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL,
+		        (gameState.playerPosition != PLAYER_POSITION.BLINDS))
+	then
+		System.out.println("Face Cards Offsuit - One player called - Not Blinds position - Fold");
+end
+
+rule "Face Cards Offsuit - One player called - Blinds position"
+	when
+		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
+		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
+		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
+		        holeCards.firstCard.suit != holeCards.secondCard.suit),
+		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL,
+		        (gameState.playerPosition == PLAYER_POSITION.BLINDS))
+	then
+		System.out.println("Face Cards Offsuit - One player called - Blinds position - Call");
+end
+
+rule "Face Cards Offsuit - One player raised"
+	when
+		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
+		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
+		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
+		        holeCards.firstCard.suit != holeCards.secondCard.suit),
+		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+	then
+		System.out.println("Face Cards Offsuit - One player raised - Fold");
+end

@@ -10,7 +10,7 @@ public class StateConverter implements IStringConverter<GameState.ROUND> {
 
     public GameState.ROUND convert(String value) {
         GameState.ROUND state = null;
-        if(value.equalsIgnoreCase("s")){
+        if(value.equalsIgnoreCase("pf")){
             state = GameState.ROUND.PREFLOP;
         }else if(value.equalsIgnoreCase("f")){
             state = GameState.ROUND.FLOP;
