@@ -15,7 +15,7 @@ public class PositionConverter implements IStringConverter<GameState.PLAYER_POSI
         }else if(value.equalsIgnoreCase("m")){
             position = GameState.PLAYER_POSITION.MID;
         }else if(value.equalsIgnoreCase("l")){
-            position = GameState.PLAYER_POSITION.TURN;
+            position = GameState.PLAYER_POSITION.LATE;
         }else if(value.equalsIgnoreCase("b")){
             position = GameState.PLAYER_POSITION.BLINDS;
         }

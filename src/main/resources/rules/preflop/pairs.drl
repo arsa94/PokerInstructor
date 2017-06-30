@@ -6,27 +6,86 @@ import rs.ac.uns.ftn.GameState.ACTIONS_BEFORE_PLAYER;
 import rs.ac.uns.ftn.GameState.PLAYER_POSITION;
 import java.util.Arrays;
 
-rule "high pairs"
+rule "High Pairs"
 	when
 		Player( (holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank == Card.RANK_ACE) ||
 				(holeCards.firstCard.rank == Card.RANK_KING && holeCards.secondCard.rank == Card.RANK_KING) || 
 				(holeCards.firstCard.rank == Card.RANK_QUEEN && holeCards.secondCard.rank == Card.RANK_QUEEN))
 	then
-		System.out.println("high pairs - Raise");
+		System.out.println("High Pairs - Raise");
 end
 
-rule "middle pairs - all players fold or one player called"
+rule "Middle Pairs - All players fold or one player called"
 	when
 		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank && Arrays.asList(Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank),
 		        (Arrays.asList(ACTIONS_BEFORE_PLAYER.ALL_FOLD, ACTIONS_BEFORE_PLAYER.ONE_CALL) contains gameState.actionsBeforePlayer))
 	then
-		System.out.println("middle pairs - Raise");
+		System.out.println("Middle Pairs - All players fold or one player called - Raise");
 end
 
-rule "middle pairs - one player raised"
+rule "Middle Pairs - One player raised"
 	when
 		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank && Arrays.asList(Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank),
 		        (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE))
 	then
-		System.out.println("middle pairs - Call 20");
+		System.out.println("Middle Pairs - One player raised - Call 20");
+end
+
+rule "Low Pairs - All players Fold - Early position"
+	when
+		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank &&
+                 holeCards.firstCard.rank <= Card.RANK_9 && holeCards.firstCard.rank >= Card.RANK_2),
+                (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD),
+                (gameState.playerPosition == PLAYER_POSITION.EARLY))
+	then
+	    System.out.println("Low Pairs - All players fold - Early position - Fold");
+end
+
+rule "Low Pairs - All players Fold - Mid or Blinds position"
+	when
+		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank &&
+                 holeCards.firstCard.rank <= Card.RANK_9 && holeCards.firstCard.rank >= Card.RANK_2),
+                (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD),
+                (gameState.playerPosition == PLAYER_POSITION.MID || gameState.playerPosition == PLAYER_POSITION.BLINDS ))
+	then
+	    System.out.println("Low Pairs - All players fold - Mid or Blinds position - Call");
+end
+
+rule "Low Pairs - All players Fold - Late position"
+	when
+		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank &&
+                 holeCards.firstCard.rank <= Card.RANK_9 && holeCards.firstCard.rank >= Card.RANK_2),
+                (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD),
+                (gameState.playerPosition == PLAYER_POSITION.LATE))
+	then
+	    System.out.println("Low Pairs - All players fold - Late position - Raise");
+end
+
+rule "Low Pairs - One player called - Early position"
+	when
+		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank &&
+                 holeCards.firstCard.rank <= Card.RANK_9 && holeCards.firstCard.rank >= Card.RANK_2),
+                (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL),
+                (gameState.playerPosition == PLAYER_POSITION.EARLY))
+	then
+	    System.out.println("Low Pairs - One player called - Early position - Fold");
+end
+
+rule "Low Pairs - One player called - Not Early position"
+	when
+		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank &&
+                 holeCards.firstCard.rank <= Card.RANK_9 && holeCards.firstCard.rank >= Card.RANK_2),
+                (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL),
+                (gameState.playerPosition != PLAYER_POSITION.EARLY))
+	then
+	    System.out.println("Low Pairs - One player called - Not Early position - Call");
+end
+
+rule "Low Pairs - One player raised"
+	when
+		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank &&
+                 holeCards.firstCard.rank <= Card.RANK_9 && holeCards.firstCard.rank >= Card.RANK_2),
+                (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE))
+	then
+	    System.out.println("Low Pairs - One player raised - Call 20");
 end
