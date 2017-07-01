@@ -43,13 +43,13 @@ public class PokerGame {
         Deck deck = new Deck();
         
         // starting hand
-        Card ace_hearts = new Card(Card.SUIT_HEARTS, Card.RANK_ACE);
-        Card queen_hearts = new Card(Card.SUIT_CLUBS, Card.RANK_ACE);
+        Card ace_hearts = new Card(Card.SUIT_HEARTS, Card.RANK_2);
+        Card queen_hearts = new Card(Card.SUIT_CLUBS, Card.RANK_KING);
         
         // flop
-        Card three_hearts = new Card(Card.SUIT_HEARTS, Card.RANK_3);
+        Card three_hearts = new Card(Card.SUIT_HEARTS, Card.RANK_ACE);
         Card four_spades = new Card(Card.SUIT_SPADES, Card.RANK_4);
-        Card jack_hearts = new Card(Card.SUIT_HEARTS, Card.RANK_JACK);
+        Card jack_hearts = new Card(Card.SUIT_HEARTS, Card.RANK_KING);
         
         HashSet<Card> flop = new HashSet<Card>();
         flop.add(three_hearts);
@@ -70,7 +70,7 @@ public class PokerGame {
         
         long start = System.currentTimeMillis();
         //player.calculateHandStrength(weightArray, 5, remainingCards);
-        player.calculateHandPotential(weightArray, 5, true, remainingCards);
+        player.calculateHandPotential(weightArray, 1, true, remainingCards);
         long end = System.currentTimeMillis();
         System.out.println("Time: " + (end-start));
        

@@ -46,6 +46,8 @@ public class Player {
     private double positiveHandPotential;
     // This value represents the reverse implied odds
     private double negativeHandPotential;
+
+    private double ECH;
     
     /**
      * Create a player, taking the two holecards and current gamestate as input.
@@ -90,7 +92,11 @@ public class Player {
     public double getNegativeHandPotential(){
         return this.negativeHandPotential;
     }
-    
+
+    //EHS = HS + (1-HS) x positive hanpotential - HS x negative handpotential
+    public double getECH(){
+        return handStrength + (1-handStrength)*positiveHandPotential - handStrength*negativeHandPotential;
+    }
     
     /**
      * Return the expected hole cards.

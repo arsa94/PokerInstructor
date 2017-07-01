@@ -1,0 +1,50 @@
+package rules.flop;
+
+import rs.ac.uns.ftn.Player;
+import rs.ac.uns.ftn.handranking.Card;
+import rs.ac.uns.ftn.GameState.ACTIONS_BEFORE_PLAYER;
+import rs.ac.uns.ftn.GameState.PLAYER_POSITION;
+import java.util.Arrays;
+
+rule "ECH more than 90"
+	when
+		Player(getECH() > 90)
+	then
+		System.out.println("ECH more than 90 - Raise and Raise");
+end
+
+rule "ECH from 70 to 90 Early position All fold"
+	when
+		Player(getECH() >= 70 && getECH() <=90,
+		gameState.playerPosition == PLAYER_POSITION.EARLY,
+		gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	then
+		System.out.println("ECH from 70 to 90 Early position All fold - Call and Call");
+end
+
+rule "ECH from 70 to 90 Mid, Late or Blinds position All fold"
+	when
+		Player(getECH() >= 70 && getECH() <=90,
+		(Arrays.asList(PLAYER_POSITION.MID, PLAYER_POSITION.LATE, PLAYER_POSITION.BLINDS) contains gameState.playerPosition),
+		gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	then
+		System.out.println("ECH from 70 to 90 Mid, Late or Blinds position All fold - Raise and Call");
+end
+
+rule "ECH from 70 to 90 Early and Mid position One player called"
+	when
+        Player(getECH() >= 70 && getECH() <=90,
+        (Arrays.asList(PLAYER_POSITION.EARLY, PLAYER_POSITION.MID) contains gameState.playerPosition),
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
+	then
+		System.out.println("ECH from 70 to 90 Early and Mid position One player fold - Call and Call");
+end
+
+rule "ECH from 70 to 90 Late or Blinds position One player called"
+	when
+		Player(getECH() >= 70 && getECH() <=90,
+		(Arrays.asList(PLAYER_POSITION.LATE, PLAYER_POSITION.BLINDS) contains gameState.playerPosition),
+		gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
+	then
+		System.out.println("ECH from 70 to 90 Late or Blinds position One player fold- Raise and Call");
+end
