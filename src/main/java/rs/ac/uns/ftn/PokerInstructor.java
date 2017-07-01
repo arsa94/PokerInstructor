@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn;
 
 import com.beust.jcommander.JCommander;
+import org.drools.core.process.core.datatype.impl.type.UndefinedDataType;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -8,6 +9,7 @@ import rs.ac.uns.ftn.handranking.Card;
 import rs.ac.uns.ftn.handranking.util.HandRanker;
 import rs.ac.uns.ftn.handranking.util.HandRankingException;
 import rs.ac.uns.ftn.parser.Parser;
+import rs.ac.uns.ftn.exceptions.UndefinedStateException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.List;
  * Created by Micko on 29-Jun-17.
  */
 public class PokerInstructor {
-    public static void main(String[] args) throws HandRankingException {
+    public static void main(String[] args) throws HandRankingException, UndefinedStateException {
         Parser parser = new Parser();
         JCommander.newBuilder()
                 .addObject(parser)
@@ -73,25 +75,26 @@ public class PokerInstructor {
 
         KieServices ks = KieServices.Factory.get();
         KieContainer kc = ks.getKieClasspathContainer();
-        KieSession kSession = null;
-        if(parser.getState() == GameState.ROUND.PREFLOP){
-            kSession = kc.newKieSession("preflop-rules");
-        }else if(parser.getState() == GameState.ROUND.FLOP){
-            kSession = kc.newKieSession("flop-rules");
-        }else if(parser.getState() == GameState.ROUND.TURN){
-            kSession = kc.newKieSession("flop-rules");
-        }else if(parser.getState() == GameState.ROUND.RIVER){
-            kSession = kc.newKieSession("flop-rules");
+        KieSession kSession;
+        switch(parser.getState()){
+            case PREFLOP:   kSession = kc.newKieSession("preflop-rules");
+                            break;
+            case FLOP:      kSession = kc.newKieSession("flop-rules");
+                            break;
+            case TURN:      kSession = kc.newKieSession("turn-rules");
+                            break;
+            case RIVER:     kSession = kc.newKieSession("river-rules");
+                            break;
+            default:        throw new UndefinedStateException();
         }
-
-
-        System.out.println(player);
 
         kSession.insert(player);
 
         System.out.println('\n');
         int firedRules = kSession.fireAllRules();
-
+        if(firedRules == 0){
+            System.out.println("Bad cards - Fold");
+        }
 
         System.out.println(firedRules);
 
