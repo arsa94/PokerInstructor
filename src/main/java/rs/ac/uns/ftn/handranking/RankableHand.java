@@ -36,8 +36,8 @@ public class RankableHand extends Hand{
      * @throws poker.handranking.util.HandRankingException
      */
     public RankableHand(Set<Card> c) throws HandRankingException{
-        if(c.size() < 5 | c.size() > 7){
-            String ex = "Between 5 and 7 unique cards required to construct instance. " +
+        if(c.size() < 5 | c.size() > 9){
+            String ex = "Between 5 and 9 unique cards required to construct instance. " +
                         "Detected " + this.cards.size() + " cards";
             throw new HandRankingException(ex);
         }

@@ -6,45 +6,134 @@ import rs.ac.uns.ftn.GameState.ACTIONS_BEFORE_PLAYER;
 import rs.ac.uns.ftn.GameState.PLAYER_POSITION;
 import java.util.Arrays;
 
-rule "ECH more than 90"
+rule "ECH Nan - handStrength > 0.9"
 	when
-		Player(getECH() > 90)
+		Player(Double.isNaN(ECH) && handStrength > 0.9)
 	then
-		System.out.println("ECH more than 90 - Raise and Raise");
+		System.out.println("ECH Nan - handStrength > 0.9 - Raise");
 end
 
-rule "ECH from 70 to 90 Early position All fold"
+rule "ECH Nan - handStrength >= 0.3 and <= 0.9"
 	when
-		Player(getECH() >= 70 && getECH() <=90,
+		Player(Double.isNaN(ECH) && handStrength >= 0.3 && handStrength <= 0.9)
+	then
+		System.out.println("ECH Nan - handStrength >= 0.3 and <= 0.9 - Call");
+end
+
+rule "ECH Nan - handStrength < 0.3"
+	when
+		Player(Double.isNaN(ECH) && handStrength < 0.3)
+	then
+		System.out.println("ECH Nan - handStrength < 0.3 - Fold");
+end
+
+rule "ECH > 0.9"
+	when
+		Player(ECH > 0.9)
+	then
+		System.out.println("ECH > 0.9 - Raise");
+end
+
+rule "ECH 0.7-0.9 - Early position - All fold"
+	when
+		Player(ECH >= 0.7 && ECH <=0.9,
 		gameState.playerPosition == PLAYER_POSITION.EARLY,
 		gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
 	then
-		System.out.println("ECH from 70 to 90 Early position All fold - Call and Call");
+		System.out.println("ECH 0.7-0.9 - Early position - All fold - Call");
 end
 
-rule "ECH from 70 to 90 Mid, Late or Blinds position All fold"
+rule "ECH 0.7-0.9 - Mid, Late or Blinds position - All fold"
 	when
-		Player(getECH() >= 70 && getECH() <=90,
+		Player(ECH >= 0.7 && ECH <=0.9,
 		(Arrays.asList(PLAYER_POSITION.MID, PLAYER_POSITION.LATE, PLAYER_POSITION.BLINDS) contains gameState.playerPosition),
 		gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
 	then
-		System.out.println("ECH from 70 to 90 Mid, Late or Blinds position All fold - Raise and Call");
+		System.out.println("ECH 0.7-0.9 - Mid, Late or Blinds position - All fold - Raise");
 end
 
-rule "ECH from 70 to 90 Early and Mid position One player called"
+rule "ECH 0.7-0.9 - Early and Mid position - One player called"
 	when
-        Player(getECH() >= 70 && getECH() <=90,
+        Player(ECH >= 0.7 && ECH <=0.9,
         (Arrays.asList(PLAYER_POSITION.EARLY, PLAYER_POSITION.MID) contains gameState.playerPosition),
         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
 	then
-		System.out.println("ECH from 70 to 90 Early and Mid position One player fold - Call and Call");
+		System.out.println("ECH 0.7-0.9 - Early and Mid position - One player called - Call");
 end
 
-rule "ECH from 70 to 90 Late or Blinds position One player called"
+rule "ECH 0.7-0.9 - Late or Blinds position - One player called"
 	when
-		Player(getECH() >= 70 && getECH() <=90,
+		Player(ECH >= 0.7 && ECH <=0.9,
 		(Arrays.asList(PLAYER_POSITION.LATE, PLAYER_POSITION.BLINDS) contains gameState.playerPosition),
 		gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
 	then
-		System.out.println("ECH from 70 to 90 Late or Blinds position One player fold- Raise and Call");
+		System.out.println("ECH 0.7-0.9 - Late or Blinds position - One player called - Raise");
+end
+
+rule "ECH 0.7-0.9 - One player raised"
+	when
+		Player(ECH >= 0.7 && ECH <=0.9,
+		gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+	then
+		System.out.println("ECH 0.7-0.9 - One player raised - Call");
+end
+
+rule "ECH 0.7-0.9 - One player reraised"
+	when
+		Player(ECH >= 0.7 && ECH <=0.9,
+		gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	then
+		System.out.println("ECH 0.7-0.9 - One player reraised - Call");
+end
+
+rule "ECH < 0.7 - Early and Mid position - All players fold"
+	when
+        Player(ECH < 0.7,
+        (Arrays.asList(PLAYER_POSITION.EARLY, PLAYER_POSITION.MID) contains gameState.playerPosition),
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	then
+		System.out.println("ECH < 0.7 - Early and Mid position - All players fold - Fold");
+end
+
+rule "ECH < 0.7 - Late and Blinds position - All players fold"
+	when
+        Player(ECH < 0.7,
+        (Arrays.asList(PLAYER_POSITION.LATE, PLAYER_POSITION.BLINDS) contains gameState.playerPosition),
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	then
+		System.out.println("ECH < 0.7 - Early and Mid position - All players fold - Raise");
+end
+
+rule "ECH < 0.7 - Early and Mid position - One player called"
+	when
+        Player(ECH < 0.7,
+        (Arrays.asList(PLAYER_POSITION.EARLY, PLAYER_POSITION.MID) contains gameState.playerPosition),
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
+	then
+		System.out.println("ECH < 0.7 - Early and Mid position - All players fold - Fold");
+end
+
+rule "ECH < 0.7 - Late and Blinds position - One player called"
+	when
+        Player(ECH < 0.7,
+        (Arrays.asList(PLAYER_POSITION.LATE, PLAYER_POSITION.BLINDS) contains gameState.playerPosition),
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
+	then
+		System.out.println("ECH < 0.7 - Early and Mid position - All players fold - Call");
+end
+
+rule "ECH < 0.7 - One player raised"
+	when
+        Player(ECH < 0.7,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+	then
+		System.out.println("ECH < 0.7 - One player raised - Fold");
+end
+
+rule "ECH < 0.7 - Reraised"
+	when
+        Player(ECH < 0.7,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	then
+		System.out.println("ECH < 0.7 - Reraised - Fold");
 end

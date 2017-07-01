@@ -42,31 +42,42 @@ public class PokerGame {
     public static void main(String[] args) throws HandRankingException {
         Deck deck = new Deck();
         
-        // starting hand
-        Card ace_hearts = new Card(Card.SUIT_HEARTS, Card.RANK_2);
-        Card queen_hearts = new Card(Card.SUIT_CLUBS, Card.RANK_KING);
+        // starting
+        Card firstCard = new Card(Card.SUIT_HEARTS, Card.RANK_2);
+        Card secondCard = new Card(Card.SUIT_SPADES, Card.RANK_3);
         
         // flop
-        Card three_hearts = new Card(Card.SUIT_HEARTS, Card.RANK_ACE);
-        Card four_spades = new Card(Card.SUIT_SPADES, Card.RANK_4);
-        Card jack_hearts = new Card(Card.SUIT_HEARTS, Card.RANK_KING);
+        Card firstFlop = new Card(Card.SUIT_HEARTS, Card.RANK_4);
+        Card secondFlop = new Card(Card.SUIT_SPADES, Card.RANK_5);
+        Card thirdFlop = new Card(Card.SUIT_CLUBS, Card.RANK_6);
+
+        //turn
+        Card turn = new Card(Card.SUIT_SPADES, Card.RANK_7);
+
+        //river
+        Card river = new Card(Card.SUIT_CLUBS, Card.RANK_8);
         
         HashSet<Card> flop = new HashSet<Card>();
-        flop.add(three_hearts);
-        flop.add(four_spades);
-        flop.add(jack_hearts);
+        flop.add(firstFlop);
+        flop.add(secondFlop);
+        flop.add(thirdFlop);
    
         
-        deck.removeCard(ace_hearts); deck.removeCard(queen_hearts);
-        deck.removeCard(three_hearts); deck.removeCard(four_spades);
-        deck.removeCard(jack_hearts);
+        deck.removeCard(firstCard); deck.removeCard(secondCard);
+        deck.removeCard(firstFlop); deck.removeCard(secondFlop);
+        deck.removeCard(thirdFlop);
+
+        deck.removeCard(turn);
+        deck.removeCard(river);
         
         List<Card> remainingCards = deck.getCards();
         List<List<Double>> weightArray = HandRanker.getUniformWeightArray();
         
         GameState gameState = new GameState();
         gameState.setFlop(flop);
-        Player player = new Player(ace_hearts, queen_hearts, gameState);
+        gameState.setTurn(turn);
+        gameState.setRiver(river);
+        Player player = new Player(firstCard, secondCard, gameState);
         
         long start = System.currentTimeMillis();
         //player.calculateHandStrength(weightArray, 5, remainingCards);

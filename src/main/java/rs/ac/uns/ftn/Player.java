@@ -95,7 +95,7 @@ public class Player {
 
     //EHS = HS + (1-HS) x positive hanpotential - HS x negative handpotential
     public double getECH(){
-        return handStrength + (1-handStrength)*positiveHandPotential - handStrength*negativeHandPotential;
+        return this.ECH;//handStrength + (1-handStrength)*positiveHandPotential - handStrength*negativeHandPotential;
     }
     
     /**
@@ -277,7 +277,8 @@ public class Player {
                                            (sumBehind + sumTied/2);
             this.negativeHandPotential = (transitionMatrix[AHEAD][BEHIND] + transitionMatrix[AHEAD][TIED]/2 + transitionMatrix[TIED][BEHIND]/2) /
                                            (sumAhead + sumTied/2);
-            
+
+           this.ECH = this.handStrength + (1-this.handStrength)*this.positiveHandPotential - this.handStrength*this.negativeHandPotential;
             //printStats(outcomes, transitionMatrix);
         }
     }
@@ -320,5 +321,18 @@ public class Player {
         System.out.println("Tied-Ahead: " + transitionMatrix[TIED][AHEAD]);
         System.out.println("Tied-Tied: " + transitionMatrix[TIED][TIED]);
         System.out.println("Tied-Behind: "+ transitionMatrix[TIED][BEHIND]);
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "holeCards=" + holeCards +
+                ", gameState=" + gameState +
+                ", unknownCards=" + unknownCards +
+                ", handStrength=" + handStrength +
+                ", positiveHandPotential=" + positiveHandPotential +
+                ", negativeHandPotential=" + negativeHandPotential +
+                ", ECH=" + ECH +
+                '}';
     }
 }

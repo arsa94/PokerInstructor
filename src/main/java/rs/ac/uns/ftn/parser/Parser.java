@@ -31,6 +31,9 @@ public class Parser {
     @Parameter(names = "-pot")
     private Integer pot;
 
+    @Parameter(names = "-no")
+    private Integer numberOfOpponents;
+
     public List<Card> getCards() {
         return cards;
     }
@@ -71,14 +74,23 @@ public class Parser {
         this.pot = pot;
     }
 
+    public Integer getNumberOfOpponents() {
+        return numberOfOpponents;
+    }
+
+    public void setNumberOfOpponents(Integer numberOfOpponents) {
+        this.numberOfOpponents = numberOfOpponents;
+    }
+
     @Override
     public String toString() {
-        return "parser.Parser{" +
-                "cards='" + cards + '\'' +
-                ", state='" + state + '\'' +
-                ", position='" + position + '\'' +
-                ", action='" + action + '\'' +
+        return "Parser{" +
+                "cards=" + cards +
+                ", state=" + state +
+                ", position=" + position +
+                ", action=" + action +
                 ", pot=" + pot +
+                ", numberOfOpponents=" + numberOfOpponents +
                 '}';
     }
 }

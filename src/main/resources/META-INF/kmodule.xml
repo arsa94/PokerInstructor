@@ -3,4 +3,7 @@
     <kbase name="preflop" packages="rules.preflop">
         <ksession name="preflop-rules"/>
     </kbase>
+    <kbase name="flop" packages="rules.flop">
+        <ksession name="flop-rules"/>
+    </kbase>
 </kmodule>
