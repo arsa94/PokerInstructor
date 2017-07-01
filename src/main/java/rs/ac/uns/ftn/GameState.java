@@ -33,7 +33,7 @@ public class GameState {
 
     public enum ROUND {PREFLOP, FLOP, TURN, RIVER}
     public enum PLAYER_POSITION {EARLY, MID, LATE, BLINDS}
-    public enum ACTIONS_BEFORE_PLAYER {ALL_FOLD, ONE_CALL, ONE_RAISE}
+    public enum ACTIONS_BEFORE_PLAYER {ALL_FOLD, ONE_CALL, ONE_RAISE, RE_RAISE}
     
     private ArrayList<Player> players;
     private Deck remainingCards;

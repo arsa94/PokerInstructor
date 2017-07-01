@@ -6,12 +6,22 @@ import rs.ac.uns.ftn.GameState.ACTIONS_BEFORE_PLAYER;
 import rs.ac.uns.ftn.GameState.PLAYER_POSITION;
 import java.util.Arrays;
 
-rule "Ace-High Kicker"
+rule "Ace-High Kicker - Not Reraised"
 	when
-		Player( (holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank == Card.RANK_KING) ||
-				(holeCards.firstCard.rank == Card.RANK_KING && holeCards.secondCard.rank == Card.RANK_ACE))
+		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank == Card.RANK_KING) ||
+				(holeCards.firstCard.rank == Card.RANK_KING && holeCards.secondCard.rank == Card.RANK_ACE)),
+				 gameState.actionsBeforePlayer != ACTIONS_BEFORE_PLAYER.RE_RAISE)
 	then
-		System.out.println("Ace-High Kicker - Raise");
+		System.out.println("Ace-High Kicker - Not Reraised - Raise");
+end
+
+rule "Ace-High Kicker - Reraised"
+	when
+		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank == Card.RANK_KING) ||
+				(holeCards.firstCard.rank == Card.RANK_KING && holeCards.secondCard.rank == Card.RANK_ACE)),
+				 gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	then
+		System.out.println("Ace-High Kicker - Reraised - Fold");
 end
 
 rule "Ace-High to Middle Kicker - All players fold - Early position"
@@ -62,13 +72,13 @@ rule "Ace-High to Middle Kicker - One player called - BLINDS position"
 		System.out.println("Ace-High to Middle Kicker - One player called - Blinds position - Call");
 end
 
-rule "Ace-High to Middle Kicker - One player raised"
+rule "Ace-High to Middle Kicker - One player raised or Reraised"
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank) ||
 		         (holeCards.secondCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank)),
-		         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+		         (Arrays.asList(ACTIONS_BEFORE_PLAYER.ONE_RAISE, ACTIONS_BEFORE_PLAYER.RE_RAISE) contains gameState.actionsBeforePlayer))
 	then
-		System.out.println("Ace-High to Middle Kicker - One player raised - Fold");
+		System.out.println("Ace-High to Middle Kicker - One player raised or Reraised - Fold");
 end
 
 rule "Ace-Small suited - All players fold - Early or Middle position"
@@ -115,14 +125,14 @@ rule "Ace-Small suited - One player called - Late or Blinds position"
 		System.out.println("Ace-Small suited - One player called - Late or Blinds position - Call");
 end
 
-rule "Ace-Small suited - One player raised"
+rule "Ace-Small suited - One player raised or Reraised"
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank <= Card.RANK_9) ||
 		         (holeCards.secondCard.rank == Card.RANK_ACE && holeCards.firstCard.rank <= Card.RANK_9)),
 		         holeCards.firstCard.suit == holeCards.secondCard.suit,
-		         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+		         (Arrays.asList(ACTIONS_BEFORE_PLAYER.ONE_RAISE, ACTIONS_BEFORE_PLAYER.RE_RAISE) contains gameState.actionsBeforePlayer))
 	then
-		System.out.println("Ace-Small suited - One player raised - Fold");
+		System.out.println("Ace-Small suited - One player raised or Reraised - Fold");
 end
 
 

@@ -61,12 +61,12 @@ rule "Suited cards in sequence - One player called - Not Early position"
 		System.out.println("Suited cards in sequence - One player called - Not Early position - Call");
 end
 
-rule "Suited cards in sequence - One player raised"
+rule "Suited cards in sequence - One player raised or Reraised"
 	when
 		Player((((holeCards.firstCard.rank >= Card.RANK_5 && holeCards.firstCard.rank <= Card.RANK_10 && holeCards.secondCard.rank == holeCards.firstCard.rank-1) ||
 		         (holeCards.secondCard.rank >= Card.RANK_5 && holeCards.secondCard.rank <= Card.RANK_10 && holeCards.firstCard.rank == holeCards.secondCard.rank-1)) &&
 		        holeCards.firstCard.suit == holeCards.secondCard.suit),
-		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+		        (Arrays.asList(ACTIONS_BEFORE_PLAYER.ONE_RAISE, ACTIONS_BEFORE_PLAYER.RE_RAISE) contains gameState.actionsBeforePlayer))
 	then
-		System.out.println("Suited cards in sequence - One player raised - Fold");
+		System.out.println("Suited cards in sequence - One player raised or Reraised - Fold");
 end
