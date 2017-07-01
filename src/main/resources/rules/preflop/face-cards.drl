@@ -54,15 +54,15 @@ rule "Suited Face Cards - One player called - Not Early position"
 		System.out.println("Suited Face Cards - One player called - Not Early position - Call");
 end
 
-rule "Suited Face Cards - One player raised"
+rule "Suited Face Cards - One player raised or Reraised"
 	when
 		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
 		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
 		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
 		        holeCards.firstCard.suit == holeCards.secondCard.suit),
-		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+		        (Arrays.asList(ACTIONS_BEFORE_PLAYER.ONE_RAISE, ACTIONS_BEFORE_PLAYER.RE_RAISE) contains gameState.actionsBeforePlayer))
 	then
-		System.out.println("Suited Face Cards - One player raised - Fold");
+		System.out.println("Suited Face Cards - One player raised or Reraised - Fold");
 end
 
 
@@ -115,13 +115,13 @@ rule "Face Cards Offsuit - One player called - Blinds position"
 		System.out.println("Face Cards Offsuit - One player called - Blinds position - Call");
 end
 
-rule "Face Cards Offsuit - One player raised"
+rule "Face Cards Offsuit - One player raised or Reraised"
 	when
 		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
 		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
 		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
 		        holeCards.firstCard.suit != holeCards.secondCard.suit),
-		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+		        (Arrays.asList(ACTIONS_BEFORE_PLAYER.ONE_RAISE, ACTIONS_BEFORE_PLAYER.RE_RAISE) contains gameState.actionsBeforePlayer))
 	then
-		System.out.println("Face Cards Offsuit - One player raised - Fold");
+		System.out.println("Face Cards Offsuit - One player raised or Reraised - Fold");
 end

@@ -16,6 +16,8 @@ public class ActionConverter implements IStringConverter<GameState.ACTIONS_BEFOR
             action = GameState.ACTIONS_BEFORE_PLAYER.ONE_CALL;
         }else if(value.equalsIgnoreCase("or")){
             action = GameState.ACTIONS_BEFORE_PLAYER.ONE_RAISE;
+        }else if(value.equalsIgnoreCase("rr")){
+            action = GameState.ACTIONS_BEFORE_PLAYER.RE_RAISE;
         }
 
         return action;

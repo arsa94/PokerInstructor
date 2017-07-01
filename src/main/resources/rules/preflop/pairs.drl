@@ -6,13 +6,38 @@ import rs.ac.uns.ftn.GameState.ACTIONS_BEFORE_PLAYER;
 import rs.ac.uns.ftn.GameState.PLAYER_POSITION;
 import java.util.Arrays;
 
-rule "High Pairs"
+rule "High Pairs (AA, KK) - Not Reraised"
 	when
-		Player( (holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank == Card.RANK_ACE) ||
-				(holeCards.firstCard.rank == Card.RANK_KING && holeCards.secondCard.rank == Card.RANK_KING) || 
-				(holeCards.firstCard.rank == Card.RANK_QUEEN && holeCards.secondCard.rank == Card.RANK_QUEEN))
+		Player(((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank == Card.RANK_ACE) ||
+				(holeCards.firstCard.rank == Card.RANK_KING && holeCards.secondCard.rank == Card.RANK_KING)),
+				gameState.actionsBeforePlayer != ACTIONS_BEFORE_PLAYER.RE_RAISE)
 	then
-		System.out.println("High Pairs - Raise");
+		System.out.println("High Pairs (AA, KK) - Not Reraised - Raise");
+end
+
+rule "High Pairs (AA, KK) - Reraised"
+	when
+		Player(((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank == Card.RANK_ACE) ||
+				(holeCards.firstCard.rank == Card.RANK_KING && holeCards.secondCard.rank == Card.RANK_KING)),
+				gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	then
+		System.out.println("High Pairs (AA, KK) - Reraised - Re-Raise");
+end
+
+rule "High Pairs (QQ) - Not Reraised"
+	when
+		Player( (holeCards.firstCard.rank == Card.RANK_QUEEN && holeCards.secondCard.rank == Card.RANK_QUEEN),
+		         gameState.actionsBeforePlayer != ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	then
+		System.out.println("High Pairs (QQ) - Not Reraised - Raise");
+end
+
+rule "High Pairs (QQ) - Reraised"
+	when
+		Player( (holeCards.firstCard.rank == Card.RANK_QUEEN && holeCards.secondCard.rank == Card.RANK_QUEEN),
+		         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	then
+		System.out.println("High Pairs (QQ) - Reraised - Call 20");
 end
 
 rule "Middle Pairs - All players fold or one player called"
@@ -23,12 +48,12 @@ rule "Middle Pairs - All players fold or one player called"
 		System.out.println("Middle Pairs - All players fold or one player called - Raise");
 end
 
-rule "Middle Pairs - One player raised"
+rule "Middle Pairs - One player raised or Reraised"
 	when
 		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank && Arrays.asList(Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank),
-		        (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE))
+		        (Arrays.asList(ACTIONS_BEFORE_PLAYER.ONE_RAISE, ACTIONS_BEFORE_PLAYER.RE_RAISE) contains gameState.actionsBeforePlayer))
 	then
-		System.out.println("Middle Pairs - One player raised - Call 20");
+		System.out.println("Middle Pairs - One player raised or Reraised - Call 20");
 end
 
 rule "Low Pairs - All players Fold - Early position"
@@ -81,11 +106,11 @@ rule "Low Pairs - One player called - Not Early position"
 	    System.out.println("Low Pairs - One player called - Not Early position - Call");
 end
 
-rule "Low Pairs - One player raised"
+rule "Low Pairs - One player raised or Reraised"
 	when
 		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank &&
                  holeCards.firstCard.rank <= Card.RANK_9 && holeCards.firstCard.rank >= Card.RANK_2),
-                (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE))
+                (Arrays.asList(ACTIONS_BEFORE_PLAYER.ONE_RAISE, ACTIONS_BEFORE_PLAYER.RE_RAISE) contains gameState.actionsBeforePlayer))
 	then
-	    System.out.println("Low Pairs - One player raised - Call 20");
+	    System.out.println("Low Pairs - One player raised or Reraised - Call 20");
 end
