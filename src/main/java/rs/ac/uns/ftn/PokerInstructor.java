@@ -81,9 +81,9 @@ public class PokerInstructor {
                             break;
             case FLOP:      kSession = kc.newKieSession("flop-rules");
                             break;
-            case TURN:      kSession = kc.newKieSession("turn-rules");
+            case TURN:      kSession = kc.newKieSession("flop-rules");
                             break;
-            case RIVER:     kSession = kc.newKieSession("river-rules");
+            case RIVER:     kSession = kc.newKieSession("flop-rules");
                             break;
             default:        throw new UndefinedStateException();
         }
