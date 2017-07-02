@@ -1,139 +1,188 @@
-package rules.flop;
+package flop;
 
 import rs.ac.uns.ftn.Player;
+import rs.ac.uns.ftn.Logger;
 import rs.ac.uns.ftn.handranking.Card;
 import rs.ac.uns.ftn.GameState.ACTIONS_BEFORE_PLAYER;
 import rs.ac.uns.ftn.GameState.PLAYER_POSITION;
 import java.util.Arrays;
 
 rule "ECH Nan - handStrength > 0.9"
+    no-loop
 	when
 		Player(Double.isNaN(ECH) && handStrength > 0.9)
+	    $l: Logger()
 	then
 		System.out.println("ECH Nan - handStrength > 0.9 - Raise");
+		modify($l){setText("ECH Nan - handStrength > 0.9 - Raise")}
 end
 
 rule "ECH Nan - handStrength >= 0.3 and <= 0.9"
+    no-loop
 	when
 		Player(Double.isNaN(ECH) && handStrength >= 0.3 && handStrength <= 0.9)
+	    $l: Logger()
 	then
 		System.out.println("ECH Nan - handStrength >= 0.3 and <= 0.9 - Call");
+		modify($l){setText("ECH Nan - handStrength >= 0.3 and <= 0.9 - Call")}
 end
 
 rule "ECH Nan - handStrength < 0.3"
+    no-loop
 	when
 		Player(Double.isNaN(ECH) && handStrength < 0.3)
+	    $l: Logger()
 	then
 		System.out.println("ECH Nan - handStrength < 0.3 - Fold");
+		modify($l){setText("ECH Nan - handStrength < 0.3 - Fold")}
 end
 
 rule "ECH > 0.9"
+    no-loop
 	when
 		Player(ECH > 0.9)
+	    $l: Logger()
 	then
 		System.out.println("ECH > 0.9 - Raise");
+		modify($l){setText("ECH > 0.9 - Raise")}
 end
 
 rule "ECH 0.7-0.9 - Early position - All fold"
+    no-loop
 	when
 		Player(ECH >= 0.7 && ECH <=0.9,
 		gameState.playerPosition == PLAYER_POSITION.EARLY,
 		gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
 	then
 		System.out.println("ECH 0.7-0.9 - Early position - All fold - Call");
+		modify($l){setText("ECH 0.7-0.9 - Early position - All fold - Call")}
 end
 
 rule "ECH 0.7-0.9 - Mid, Late or Blinds position - All fold"
+    no-loop
 	when
 		Player(ECH >= 0.7 && ECH <=0.9,
 		(Arrays.asList(PLAYER_POSITION.MID, PLAYER_POSITION.LATE, PLAYER_POSITION.BLINDS) contains gameState.playerPosition),
 		gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
 	then
 		System.out.println("ECH 0.7-0.9 - Mid, Late or Blinds position - All fold - Raise");
+		modify($l){setText("ECH 0.7-0.9 - Mid, Late or Blinds position - All fold - Raise")}
 end
 
 rule "ECH 0.7-0.9 - Early and Mid position - One player called"
+    no-loop
 	when
         Player(ECH >= 0.7 && ECH <=0.9,
         (Arrays.asList(PLAYER_POSITION.EARLY, PLAYER_POSITION.MID) contains gameState.playerPosition),
         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
+	    $l: Logger()
 	then
 		System.out.println("ECH 0.7-0.9 - Early and Mid position - One player called - Call");
+		modify($l){setText("ECH 0.7-0.9 - Early and Mid position - One player called - Call")}
 end
 
 rule "ECH 0.7-0.9 - Late or Blinds position - One player called"
+    no-loop
 	when
 		Player(ECH >= 0.7 && ECH <=0.9,
 		(Arrays.asList(PLAYER_POSITION.LATE, PLAYER_POSITION.BLINDS) contains gameState.playerPosition),
 		gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
+	    $l: Logger()
 	then
 		System.out.println("ECH 0.7-0.9 - Late or Blinds position - One player called - Raise");
+		modify($l){setText("ECH 0.7-0.9 - Late or Blinds position - One player called - Raise")}
 end
 
 rule "ECH 0.7-0.9 - One player raised"
+    no-loop
 	when
 		Player(ECH >= 0.7 && ECH <=0.9,
 		gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+	    $l: Logger()
 	then
 		System.out.println("ECH 0.7-0.9 - One player raised - Call");
+		modify($l){setText("ECH 0.7-0.9 - One player raised - Call")}
 end
 
 rule "ECH 0.7-0.9 - One player reraised"
+    no-loop
 	when
 		Player(ECH >= 0.7 && ECH <=0.9,
 		gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	    $l: Logger()
 	then
 		System.out.println("ECH 0.7-0.9 - One player reraised - Call");
+		modify($l){setText("ECH 0.7-0.9 - One player reraised - Call")}
 end
 
 rule "ECH < 0.7 - Early and Mid position - All players fold"
+    no-loop
 	when
         Player(ECH < 0.7,
         (Arrays.asList(PLAYER_POSITION.EARLY, PLAYER_POSITION.MID) contains gameState.playerPosition),
         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
 	then
 		System.out.println("ECH < 0.7 - Early and Mid position - All players fold - Fold");
+		modify($l){setText("ECH < 0.7 - Early and Mid position - All players fold - Fold")}
 end
 
 rule "ECH < 0.7 - Late and Blinds position - All players fold"
+    no-loop
 	when
         Player(ECH < 0.7,
         (Arrays.asList(PLAYER_POSITION.LATE, PLAYER_POSITION.BLINDS) contains gameState.playerPosition),
         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
 	then
 		System.out.println("ECH < 0.7 - Early and Mid position - All players fold - Raise");
+		modify($l){setText("ECH < 0.7 - Early and Mid position - All players fold - Raise")}
 end
 
 rule "ECH < 0.7 - Early and Mid position - One player called"
+    no-loop
 	when
         Player(ECH < 0.7,
         (Arrays.asList(PLAYER_POSITION.EARLY, PLAYER_POSITION.MID) contains gameState.playerPosition),
         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
+	    $l: Logger()
 	then
 		System.out.println("ECH < 0.7 - Early and Mid position - All players fold - Fold");
+		modify($l){setText("ECH < 0.7 - Early and Mid position - All players fold - Fold")}
 end
 
 rule "ECH < 0.7 - Late and Blinds position - One player called"
+    no-loop
 	when
         Player(ECH < 0.7,
         (Arrays.asList(PLAYER_POSITION.LATE, PLAYER_POSITION.BLINDS) contains gameState.playerPosition),
         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
+	    $l: Logger()
 	then
 		System.out.println("ECH < 0.7 - Early and Mid position - All players fold - Call");
+		modify($l){setText("ECH < 0.7 - Early and Mid position - All players fold - Call")}
 end
 
 rule "ECH < 0.7 - One player raised"
+    no-loop
 	when
         Player(ECH < 0.7,
         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+	    $l: Logger()
 	then
 		System.out.println("ECH < 0.7 - One player raised - Fold");
+		modify($l){setText("ECH < 0.7 - One player raised - Fold")}
 end
 
 rule "ECH < 0.7 - Reraised"
+    no-loop
 	when
         Player(ECH < 0.7,
         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	    $l: Logger()
 	then
 		System.out.println("ECH < 0.7 - Reraised - Fold");
+		modify($l){setText("ECH < 0.7 - Reraised - Fold")}
 end

@@ -1,138 +1,178 @@
 package preflop;
 
 import rs.ac.uns.ftn.Player;
+import rs.ac.uns.ftn.Logger
 import rs.ac.uns.ftn.handranking.Card;
 import rs.ac.uns.ftn.GameState.ACTIONS_BEFORE_PLAYER;
 import rs.ac.uns.ftn.GameState.PLAYER_POSITION;
 import java.util.Arrays;
 
 rule "Ace-High Kicker - Not Reraised"
+    no-loop
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank == Card.RANK_KING) ||
 				(holeCards.firstCard.rank == Card.RANK_KING && holeCards.secondCard.rank == Card.RANK_ACE)),
 				 gameState.actionsBeforePlayer != ACTIONS_BEFORE_PLAYER.RE_RAISE)
+		$l: Logger()
 	then
 		System.out.println("Ace-High Kicker - Not Reraised - Raise");
+        modify($l){setText("Ace-High Kicker - Not Reraised - Raise")}
 end
 
 rule "Ace-High Kicker - Reraised"
+    no-loop
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank == Card.RANK_KING) ||
 				(holeCards.firstCard.rank == Card.RANK_KING && holeCards.secondCard.rank == Card.RANK_ACE)),
 				 gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)
+		$l: Logger()
 	then
 		System.out.println("Ace-High Kicker - Reraised - Fold");
+		modify($l){setText("Ace-High Kicker - Reraised - Fold")}
 end
 
 rule "Ace-High to Middle Kicker - All players fold - Early position"
+    no-loop
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank) ||
 		         (holeCards.secondCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank)),
 		         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD, gameState.playerPosition == PLAYER_POSITION.EARLY)
+		$l: Logger()
 	then
 		System.out.println("Ace-High to Middle Kicker - All players fold - Early position - Fold");
+		modify($l){setText("Ace-High to Middle Kicker - All players fold - Early position - Fold")}
 end
 
 rule "Ace-High to Middle Kicker - All players fold - Not Early position"
+    no-loop
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank) ||
 		         (holeCards.secondCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank)),
 		         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD, gameState.playerPosition != PLAYER_POSITION.EARLY)
+		$l: Logger()
 	then
 		System.out.println("Ace-High to Middle Kicker - All players fold - Not Early position - Raise");
+		modify($l){setText("Ace-High to Middle Kicker - All players fold - Not Early position - Raise")}
 end
 
 rule "Ace-High to Middle Kicker - One player called - Early or Middle position"
+    no-loop
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank) ||
 		         (holeCards.secondCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank)),
 		         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL,
 		         (gameState.playerPosition == PLAYER_POSITION.EARLY || gameState.playerPosition == PLAYER_POSITION.MID))
+		$l: Logger()
 	then
 		System.out.println("Ace-High to Middle Kicker - One player called - Early or Middle position - Fold");
+		modify($l){setText("Ace-High to Middle Kicker - One player called - Early or Middle position - Fold")}
 end
 
 rule "Ace-High to Middle Kicker - One player called - Late position"
-	when
+    no-loop
+    when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank) ||
 		         (holeCards.secondCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank)),
 		         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL,
 		         gameState.playerPosition == PLAYER_POSITION.LATE)
+		$l: Logger()
 	then
 		System.out.println("Ace-High to Middle Kicker - One player called - Late position - Raise");
+		modify($l){setText("Ace-High to Middle Kicker - One player called - Late position - Raise")}
 end
 
 rule "Ace-High to Middle Kicker - One player called - BLINDS position"
+    no-loop
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank) ||
 		         (holeCards.secondCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank)),
 		         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL,
 		         gameState.playerPosition == PLAYER_POSITION.BLINDS)
+		$l: Logger()
 	then
 		System.out.println("Ace-High to Middle Kicker - One player called - Blinds position - Call");
+		modify($l){setText("Ace-High to Middle Kicker - One player called - Blinds position - Call")}
 end
 
 rule "Ace-High to Middle Kicker - One player raised or Reraised"
+    no-loop
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank) ||
 		         (holeCards.secondCard.rank == Card.RANK_ACE && Arrays.asList(Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank)),
 		         (Arrays.asList(ACTIONS_BEFORE_PLAYER.ONE_RAISE, ACTIONS_BEFORE_PLAYER.RE_RAISE) contains gameState.actionsBeforePlayer))
+		$l: Logger()
 	then
 		System.out.println("Ace-High to Middle Kicker - One player raised or Reraised - Fold");
+		modify($l){setText("Ace-High to Middle Kicker - One player raised or Reraised - Fold")}
 end
 
 rule "Ace-Small suited - All players fold - Early or Middle position"
+    no-loop
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank <= Card.RANK_9) ||
 		         (holeCards.secondCard.rank == Card.RANK_ACE && holeCards.firstCard.rank <= Card.RANK_9)),
 		         holeCards.firstCard.suit == holeCards.secondCard.suit,
 		         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD,
                  (gameState.playerPosition == PLAYER_POSITION.EARLY || gameState.playerPosition == PLAYER_POSITION.MID))
+        $l: Logger()
 	then
 		System.out.println("Ace-Small suited - All players fold - Early or Middle position - Fold");
+		modify($l){setText("Ace-Small suited - All players fold - Early or Middle position - Fold")}
 end
 
 rule "Ace-Small suited - All players fold - Late or Blinds position"
+    no-loop
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank <= Card.RANK_9) ||
 		         (holeCards.secondCard.rank == Card.RANK_ACE && holeCards.firstCard.rank <= Card.RANK_9)),
 		         holeCards.firstCard.suit == holeCards.secondCard.suit,
 		         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD,
                  (gameState.playerPosition == PLAYER_POSITION.LATE || gameState.playerPosition == PLAYER_POSITION.BLINDS))
+        $l: Logger()
 	then
 		System.out.println("Ace-Small suited - All players fold - Late or Blinds position - Raise");
+		modify($l){setText("Ace-Small suited - All players fold - Late or Blinds position - Raise")}
 end
 
 rule "Ace-Small suited - One player called - Early or Middle position"
+    no-loop
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank <= Card.RANK_9) ||
 		         (holeCards.secondCard.rank == Card.RANK_ACE && holeCards.firstCard.rank <= Card.RANK_9)),
 		         holeCards.firstCard.suit == holeCards.secondCard.suit,
 		         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL,
                  (gameState.playerPosition == PLAYER_POSITION.EARLY || gameState.playerPosition == PLAYER_POSITION.MID))
+        $l: Logger()
 	then
 		System.out.println("Ace-Small suited - One player called - Early or Middle position - Fold");
+		modify($l){setText("Ace-Small suited - One player called - Early or Middle position - Fold")}
 end
 
 rule "Ace-Small suited - One player called - Late or Blinds position"
+    no-loop
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank <= Card.RANK_9) ||
 		         (holeCards.secondCard.rank == Card.RANK_ACE && holeCards.firstCard.rank <= Card.RANK_9)),
 		         holeCards.firstCard.suit == holeCards.secondCard.suit,
 		         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL,
                  (gameState.playerPosition == PLAYER_POSITION.LATE || gameState.playerPosition == PLAYER_POSITION.BLINDS))
+        $l: Logger()
 	then
 		System.out.println("Ace-Small suited - One player called - Late or Blinds position - Call");
+		modify($l){setText("Ace-Small suited - One player called - Late or Blinds position - Call")}
 end
 
 rule "Ace-Small suited - One player raised or Reraised"
+    no-loop
 	when
 		Player( ((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank <= Card.RANK_9) ||
 		         (holeCards.secondCard.rank == Card.RANK_ACE && holeCards.firstCard.rank <= Card.RANK_9)),
 		         holeCards.firstCard.suit == holeCards.secondCard.suit,
 		         (Arrays.asList(ACTIONS_BEFORE_PLAYER.ONE_RAISE, ACTIONS_BEFORE_PLAYER.RE_RAISE) contains gameState.actionsBeforePlayer))
+		$l: Logger()
 	then
 		System.out.println("Ace-Small suited - One player raised or Reraised - Fold");
+		modify($l){setText("Ace-Small suited - One player raised or Reraised - Fold")}
 end
 
 

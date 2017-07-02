@@ -1,116 +1,153 @@
 package preflop;
 
 import rs.ac.uns.ftn.Player;
+import rs.ac.uns.ftn.Logger;
 import rs.ac.uns.ftn.handranking.Card;
 import rs.ac.uns.ftn.GameState.ACTIONS_BEFORE_PLAYER;
 import rs.ac.uns.ftn.GameState.PLAYER_POSITION;
 import java.util.Arrays;
 
 rule "High Pairs (AA, KK) - Not Reraised"
+    no-loop
 	when
 		Player(((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank == Card.RANK_ACE) ||
 				(holeCards.firstCard.rank == Card.RANK_KING && holeCards.secondCard.rank == Card.RANK_KING)),
 				gameState.actionsBeforePlayer != ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	    $l: Logger()
 	then
 		System.out.println("High Pairs (AA, KK) - Not Reraised - Raise");
+		modify($l){setText("High Pairs (AA, KK) - Not Reraised - Raise")}
 end
 
 rule "High Pairs (AA, KK) - Reraised"
+    no-loop
 	when
 		Player(((holeCards.firstCard.rank == Card.RANK_ACE && holeCards.secondCard.rank == Card.RANK_ACE) ||
 				(holeCards.firstCard.rank == Card.RANK_KING && holeCards.secondCard.rank == Card.RANK_KING)),
 				gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	    $l: Logger()
 	then
 		System.out.println("High Pairs (AA, KK) - Reraised - Re-Raise");
+		modify($l){setText("High Pairs (AA, KK) - Reraised - Re-Raise")}
 end
 
 rule "High Pairs (QQ) - Not Reraised"
+    no-loop
 	when
 		Player( (holeCards.firstCard.rank == Card.RANK_QUEEN && holeCards.secondCard.rank == Card.RANK_QUEEN),
 		         gameState.actionsBeforePlayer != ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	    $l: Logger()
 	then
 		System.out.println("High Pairs (QQ) - Not Reraised - Raise");
+		modify($l){setText("High Pairs (QQ) - Not Reraised - Raise")}
 end
 
 rule "High Pairs (QQ) - Reraised"
+    no-loop
 	when
 		Player( (holeCards.firstCard.rank == Card.RANK_QUEEN && holeCards.secondCard.rank == Card.RANK_QUEEN),
 		         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	    $l: Logger()
 	then
 		System.out.println("High Pairs (QQ) - Reraised - Call 20");
+		modify($l){setText("High Pairs (QQ) - Reraised - Call 20")}
 end
 
 rule "Middle Pairs - All players fold or one player called"
+    no-loop
 	when
 		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank && Arrays.asList(Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank),
 		        (Arrays.asList(ACTIONS_BEFORE_PLAYER.ALL_FOLD, ACTIONS_BEFORE_PLAYER.ONE_CALL) contains gameState.actionsBeforePlayer))
+	    $l: Logger()
 	then
 		System.out.println("Middle Pairs - All players fold or one player called - Raise");
+		modify($l){setText("Middle Pairs - All players fold or one player called - Raise")}
 end
 
 rule "Middle Pairs - One player raised or Reraised"
+    no-loop
 	when
 		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank && Arrays.asList(Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank),
 		        (Arrays.asList(ACTIONS_BEFORE_PLAYER.ONE_RAISE, ACTIONS_BEFORE_PLAYER.RE_RAISE) contains gameState.actionsBeforePlayer))
+	    $l: Logger()
 	then
 		System.out.println("Middle Pairs - One player raised or Reraised - Call 20");
+		modify($l){setText("Middle Pairs - One player raised or Reraised - Call 20")}
 end
 
 rule "Low Pairs - All players Fold - Early position"
+    no-loop
 	when
 		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank &&
                  holeCards.firstCard.rank <= Card.RANK_9 && holeCards.firstCard.rank >= Card.RANK_2),
                 (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD),
                 (gameState.playerPosition == PLAYER_POSITION.EARLY))
+	    $l: Logger()
 	then
 	    System.out.println("Low Pairs - All players fold - Early position - Fold");
+	    modify($l){setText("Low Pairs - All players fold - Early position - Fold")}
 end
 
 rule "Low Pairs - All players Fold - Mid or Blinds position"
+    no-loop
 	when
 		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank &&
                  holeCards.firstCard.rank <= Card.RANK_9 && holeCards.firstCard.rank >= Card.RANK_2),
                 (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD),
                 (gameState.playerPosition == PLAYER_POSITION.MID || gameState.playerPosition == PLAYER_POSITION.BLINDS ))
+	    $l: Logger()
 	then
 	    System.out.println("Low Pairs - All players fold - Mid or Blinds position - Call");
+	    modify($l){setText("Low Pairs - All players fold - Mid or Blinds position - Call")}
 end
 
 rule "Low Pairs - All players Fold - Late position"
+    no-loop
 	when
 		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank &&
                  holeCards.firstCard.rank <= Card.RANK_9 && holeCards.firstCard.rank >= Card.RANK_2),
                 (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD),
                 (gameState.playerPosition == PLAYER_POSITION.LATE))
+	    $l: Logger()
 	then
 	    System.out.println("Low Pairs - All players fold - Late position - Raise");
+	    modify($l){setText("Low Pairs - All players fold - Late position - Raise")}
 end
 
 rule "Low Pairs - One player called - Early position"
+    no-loop
 	when
 		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank &&
                  holeCards.firstCard.rank <= Card.RANK_9 && holeCards.firstCard.rank >= Card.RANK_2),
                 (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL),
                 (gameState.playerPosition == PLAYER_POSITION.EARLY))
+	    $l: Logger()
 	then
 	    System.out.println("Low Pairs - One player called - Early position - Fold");
+	    modify($l){setText("Low Pairs - One player called - Early position - Fold")}
 end
 
 rule "Low Pairs - One player called - Not Early position"
+    no-loop
 	when
 		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank &&
                  holeCards.firstCard.rank <= Card.RANK_9 && holeCards.firstCard.rank >= Card.RANK_2),
                 (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL),
                 (gameState.playerPosition != PLAYER_POSITION.EARLY))
+	    $l: Logger()
 	then
 	    System.out.println("Low Pairs - One player called - Not Early position - Call");
+	    modify($l){setText("Low Pairs - One player called - Not Early position - Call")}
 end
 
 rule "Low Pairs - One player raised or Reraised"
+    no-loop
 	when
 		Player( (holeCards.firstCard.rank == holeCards.secondCard.rank &&
                  holeCards.firstCard.rank <= Card.RANK_9 && holeCards.firstCard.rank >= Card.RANK_2),
                 (Arrays.asList(ACTIONS_BEFORE_PLAYER.ONE_RAISE, ACTIONS_BEFORE_PLAYER.RE_RAISE) contains gameState.actionsBeforePlayer))
+	    $l: Logger()
 	then
 	    System.out.println("Low Pairs - One player raised or Reraised - Call 20");
+	    modify($l){setText("Low Pairs - One player raised or Reraised - Call 20")}
 end

@@ -1,12 +1,14 @@
 package preflop;
 
 import rs.ac.uns.ftn.Player;
+import rs.ac.uns.ftn.Logger;
 import rs.ac.uns.ftn.handranking.Card;
 import rs.ac.uns.ftn.GameState.ACTIONS_BEFORE_PLAYER;
 import rs.ac.uns.ftn.GameState.PLAYER_POSITION;
 import java.util.Arrays;
 
 rule "Suited Face Cards - All players fold - Early or Mid position"
+    no-loop
 	when
 		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
 		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
@@ -14,11 +16,14 @@ rule "Suited Face Cards - All players fold - Early or Mid position"
 		        holeCards.firstCard.suit == holeCards.secondCard.suit),
 		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD,
 		        (gameState.playerPosition == PLAYER_POSITION.EARLY || gameState.playerPosition == PLAYER_POSITION.MID))
+		$l: Logger()
 	then
 		System.out.println("Suited Face Cards - All players fold - Early or Mid position - Fold");
+		modify($l){setText("Suited Face Cards - All players fold - Early or Mid position - Fold")}
 end
 
 rule "Suited Face Cards - All players fold - Late or Blinds position"
+    no-loop
 	when
 		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
 		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
@@ -26,11 +31,14 @@ rule "Suited Face Cards - All players fold - Late or Blinds position"
 		        holeCards.firstCard.suit == holeCards.secondCard.suit),
 		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD,
 		        (gameState.playerPosition == PLAYER_POSITION.LATE || gameState.playerPosition == PLAYER_POSITION.BLINDS))
+	    $l: Logger()
 	then
 		System.out.println("Suited Face Cards - All players fold - Late or Blinds position - Raise");
+		modify($l){setText("Suited Face Cards - All players fold - Late or Blinds position - Raise")}
 end
 
 rule "Suited Face Cards - One player called - Early position"
+    no-loop
 	when
 		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
 		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
@@ -38,11 +46,14 @@ rule "Suited Face Cards - One player called - Early position"
 		        holeCards.firstCard.suit == holeCards.secondCard.suit),
 		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL,
 		        (gameState.playerPosition == PLAYER_POSITION.EARLY))
+	    $l: Logger()
 	then
 		System.out.println("Suited Face Cards - One player called - Early position - Fold");
+		modify($l){setText("Suited Face Cards - One player called - Early position - Fold")}
 end
 
 rule "Suited Face Cards - One player called - Not Early position"
+    no-loop
 	when
 		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
 		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
@@ -50,24 +61,30 @@ rule "Suited Face Cards - One player called - Not Early position"
 		        holeCards.firstCard.suit == holeCards.secondCard.suit),
 		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL,
 		        (gameState.playerPosition != PLAYER_POSITION.EARLY))
+	    $l: Logger()
 	then
 		System.out.println("Suited Face Cards - One player called - Not Early position - Call");
+		modify($l){setText("Suited Face Cards - One player called - Not Early position - Call")}
 end
 
 rule "Suited Face Cards - One player raised or Reraised"
+    no-loop
 	when
 		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
 		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
 		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
 		        holeCards.firstCard.suit == holeCards.secondCard.suit),
 		        (Arrays.asList(ACTIONS_BEFORE_PLAYER.ONE_RAISE, ACTIONS_BEFORE_PLAYER.RE_RAISE) contains gameState.actionsBeforePlayer))
+	    $l: Logger()
 	then
 		System.out.println("Suited Face Cards - One player raised or Reraised - Fold");
+		modify($l){setText("Suited Face Cards - One player raised or Reraised - Fold")}
 end
 
 
 
 rule "Face Cards Offsuit - All players fold - Early or Mid position"
+    no-loop
 	when
 		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
 		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
@@ -75,11 +92,14 @@ rule "Face Cards Offsuit - All players fold - Early or Mid position"
 		        holeCards.firstCard.suit != holeCards.secondCard.suit),
 		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD,
 		        (gameState.playerPosition == PLAYER_POSITION.EARLY || gameState.playerPosition == PLAYER_POSITION.MID))
+	    $l: Logger()
 	then
 		System.out.println("Face Cards Offsuit - All players fold - Early or Mid position - Fold");
+		modify($l){setText("Face Cards Offsuit - All players fold - Early or Mid position - Fold")}
 end
 
 rule "Face Cards Offsuit - All players fold - Late or Blinds position"
+    no-loop
 	when
 		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
 		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
@@ -87,11 +107,14 @@ rule "Face Cards Offsuit - All players fold - Late or Blinds position"
 		        holeCards.firstCard.suit != holeCards.secondCard.suit),
 		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD,
 		        (gameState.playerPosition == PLAYER_POSITION.LATE || gameState.playerPosition == PLAYER_POSITION.BLINDS))
+	    $l: Logger()
 	then
 		System.out.println("Face Cards Offsuit - All players fold - Late or Blinds position - Raise");
+		modify($l){setText("Face Cards Offsuit - All players fold - Late or Blinds position - Raise")}
 end
 
 rule "Face Cards Offsuit - One player called - Not Blinds position"
+    no-loop
 	when
 		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
 		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
@@ -99,11 +122,14 @@ rule "Face Cards Offsuit - One player called - Not Blinds position"
 		        holeCards.firstCard.suit != holeCards.secondCard.suit),
 		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL,
 		        (gameState.playerPosition != PLAYER_POSITION.BLINDS))
+	    $l: Logger()
 	then
 		System.out.println("Face Cards Offsuit - One player called - Not Blinds position - Fold");
+		modify($l){setText("Face Cards Offsuit - One player called - Not Blinds position - Fold")}
 end
 
 rule "Face Cards Offsuit - One player called - Blinds position"
+    no-loop
 	when
 		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
 		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
@@ -111,17 +137,22 @@ rule "Face Cards Offsuit - One player called - Blinds position"
 		        holeCards.firstCard.suit != holeCards.secondCard.suit),
 		        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL,
 		        (gameState.playerPosition == PLAYER_POSITION.BLINDS))
+	    $l: Logger()
 	then
 		System.out.println("Face Cards Offsuit - One player called - Blinds position - Call");
+		modify($l){setText("Face Cards Offsuit - One player called - Blinds position - Call")}
 end
 
 rule "Face Cards Offsuit - One player raised or Reraised"
+    no-loop
 	when
 		Player((Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.firstCard.rank &&
 		        Arrays.asList(Card.RANK_KING, Card.RANK_QUEEN, Card.RANK_JACK, Card.RANK_10) contains holeCards.secondCard.rank &&
 		        holeCards.firstCard.rank != holeCards.secondCard.rank &&
 		        holeCards.firstCard.suit != holeCards.secondCard.suit),
 		        (Arrays.asList(ACTIONS_BEFORE_PLAYER.ONE_RAISE, ACTIONS_BEFORE_PLAYER.RE_RAISE) contains gameState.actionsBeforePlayer))
+	    $l: Logger()
 	then
 		System.out.println("Face Cards Offsuit - One player raised or Reraised - Fold");
+		modify($l){setText("Face Cards Offsuit - One player raised or Reraised - Fold")}
 end
