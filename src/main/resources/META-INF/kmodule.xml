@@ -6,4 +6,10 @@
     <kbase name="flop" packages="rules.flop">
         <ksession name="flop-rules"/>
     </kbase>
+    <kbase name="turn" packages="rules.turn">
+        <ksession name="turn-rules"/>
+    </kbase>
+    <kbase name="river" packages="rules.river">
+        <ksession name="river-rules"/>
+    </kbase>
 </kmodule>

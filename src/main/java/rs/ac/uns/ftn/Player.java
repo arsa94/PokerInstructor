@@ -55,6 +55,7 @@ public class Player {
     private double bluffOdds;
     private double callFlopOdds;
     private double callTurnOdds;
+    private double callRiverOdds;
     
     /**
      * Create a player, taking the two holecards and current gamestate as input.
@@ -144,6 +145,9 @@ public class Player {
     public double getCallTurnOdds() {
         return callTurnOdds;
     }
+
+    public double getCallRiverOdds(){ return  callRiverOdds; }
+
 
     /**
      * Return the expected hole cards.
@@ -335,6 +339,7 @@ public class Player {
            this.bluffOdds = (2 * this.bet)/((this.pot + 4*this.bet) + 2*this.bet);
            this.callFlopOdds = (this.toCall + 4*this.bet)/(this.pot + this.toCall + 8*this.bet);
            this.callTurnOdds = (this.toCall + this.bet)/(this.pot + this.toCall + 2*this.bet);
+           this.callRiverOdds = this.toCall / (this.pot + this.toCall);
            //printStats(outcomes, transitionMatrix);
         }
     }
