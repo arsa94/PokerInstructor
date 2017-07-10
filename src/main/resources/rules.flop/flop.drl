@@ -47,8 +47,8 @@ rule "positiveEHS >= 0.85 - All players fold - Raise 3 bet"
         gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
 	    $l: Logger()
 	then
-		System.out.println("positiveEHS >= 0.85 - One player raised - Raise 3 bet");
-		modify($l){setText("positiveEHS >= 0.85 - One player raised - Raise 3 bet")}
+		System.out.println("positiveEHS >= 0.85 - All players fold - Raise 3 bet");
+		modify($l){setText("positiveEHS >= 0.85 - All players fold - Raise 3 bet")}
 end
 
 rule "positiveEHS 0.50-0.85 - Reraise - Call with odds - Call"
@@ -121,24 +121,50 @@ rule "positiveEHS 0.50-0.85 - All players fold - Call"
 		modify($l){setText("positiveEHS 0.50-0.85 - All players fold - Call")}
 end
 
-rule "positiveEHS < 0.50 - EHS < call odds - Fold"
+rule "positiveEHS < 0.50 - Not All Fold - EHS < call odds - Fold"
     no-loop
 	when
         Player(positiveEHS < 0.50,
-        EHS < callFlopOdds)
+        EHS < callFlopOdds,
+        gameState.actionsBeforePlayer != ACTIONS_BEFORE_PLAYER.ALL_FOLD)
 	    $l: Logger()
 	then
-		System.out.println("positiveEHS < 0.50 - EHS < call odds - Fold");
-		modify($l){setText("positiveEHS < 0.50 - EHS < call odds - Fold")}
+		System.out.println("positiveEHS < 0.50 - Not All Fold - EHS < call odds - Fold");
+		modify($l){setText("positiveEHS < 0.50 - Not All Fold - EHS < call odds - Fold")}
 end
 
-rule "positiveEHS < 0.50 - EHS >= call odds - Call"
+rule "positiveEHS < 0.50 - Not All Fold - EHS >= call odds - Call"
     no-loop
 	when
         Player(positiveEHS < 0.50,
-        EHS >= callFlopOdds)
+        EHS >= callFlopOdds,
+        gameState.actionsBeforePlayer != ACTIONS_BEFORE_PLAYER.ALL_FOLD)
 	    $l: Logger()
 	then
-		System.out.println("positiveEHS < 0.50 - EHS >= call odds - Call");
-		modify($l){setText("positiveEHS < 0.50 - EHS >= call odds - Call")}
+		System.out.println("positiveEHS < 0.50 - Not All Fold - EHS >= call odds - Call");
+		modify($l){setText("positiveEHS < 0.50 - Not All Fold - EHS >= call odds - Call")}
+end
+
+rule "positiveEHS < 0.50 - All Fold - Try Bluff - Raise 2 bet"
+    no-loop
+	when
+        Player(positiveEHS < 0.50,
+        positiveHandPotential >= bluffOdds,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
+	then
+		System.out.println("positiveEHS < 0.50 - All Fold - Try Bluff - Raise 2 bet");
+		modify($l){setText("positiveEHS < 0.50 - All Fold - Try Bluff - Raise 2 bet")}
+end
+
+rule "positiveEHS < 0.50 - All Fold - No Bluff - Fold"
+    no-loop
+	when
+        Player(positiveEHS < 0.50,
+        positiveHandPotential < bluffOdds,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
+	then
+		System.out.println("positiveEHS < 0.50 - All Fold - No Bluff - Fold");
+		modify($l){setText("positiveEHS < 0.50 - All Fold - No Bluff - Fold")}
 end
