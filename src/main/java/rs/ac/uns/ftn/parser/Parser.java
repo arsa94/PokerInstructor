@@ -31,6 +31,12 @@ public class Parser {
     @Parameter(names = "-pot")
     private Integer pot;
 
+    @Parameter(names = "-bet")
+    private Integer bet;
+
+    @Parameter(names = "-to_call")
+    private Integer toCall;
+
     @Parameter(names = "-no")
     private Integer numberOfOpponents;
 
@@ -82,6 +88,22 @@ public class Parser {
         this.numberOfOpponents = numberOfOpponents;
     }
 
+    public Integer getBet() {
+        return bet;
+    }
+
+    public void setBet(Integer bet) {
+        this.bet = bet;
+    }
+
+    public Integer getToCall() {
+        return toCall;
+    }
+
+    public void setToCall(Integer toCall) {
+        this.toCall = toCall;
+    }
+
     @Override
     public String toString() {
         return "Parser{" +
@@ -90,6 +112,8 @@ public class Parser {
                 ", position=" + position +
                 ", action=" + action +
                 ", pot=" + pot +
+                ", bet=" + bet +
+                ", toCall=" + toCall +
                 ", numberOfOpponents=" + numberOfOpponents +
                 '}';
     }

@@ -12,7 +12,6 @@ import rs.ac.uns.ftn.exceptions.UndefinedStateException;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Created by Micko on 29-Jun-17.
@@ -88,7 +87,7 @@ public class PokerInstructor {
 //            System.out.println("HandStrength: " + player.getHandStrength());
 //            System.out.println("Positive Potential: " + player.getPositiveHandPotential());
 //            System.out.println("Negative Potential: " + player.getNegativeHandPotential());
-//            System.out.println("ECH: " + player.getECH());
+//            System.out.println("ECH: " + player.getEHS());
 //
 //            KieServices ks = KieServices.Factory.get();
 //            KieContainer kc = ks.getKieClasspathContainer();
@@ -166,7 +165,7 @@ public class PokerInstructor {
         List<Card> remainingCards = deck.getCards();
         List<List<Double>> weightArray = HandRanker.getUniformWeightArray();
 
-        Player player = new Player(firstCard, secondCard, gameState);
+        Player player = new Player(firstCard, secondCard, gameState, parser.getBet(), parser.getToCall(), parser.getPot());
         if(parser.getState() != GameState.ROUND.PREFLOP){
             player.calculateHandPotential(weightArray, parser.getNumberOfOpponents(), true, remainingCards);
         }
@@ -174,7 +173,8 @@ public class PokerInstructor {
         System.out.println("HandStrength: " + player.getHandStrength());
         System.out.println("Positive Potential: " + player.getPositiveHandPotential());
         System.out.println("Negative Potential: " + player.getNegativeHandPotential());
-        System.out.println("ECH: " + player.getECH());
+        System.out.println("EHS: " + player.getEHS());
+        System.out.println("PositiveEHS: " + player.getPositiveEHS());
 
         KieServices ks = KieServices.Factory.get();
         KieContainer kc = ks.getKieClasspathContainer();

@@ -47,7 +47,14 @@ public class Player {
     // This value represents the reverse implied odds
     private double negativeHandPotential;
 
-    private double ECH;
+    private double EHS;
+    private double positiveEHS;
+    private double bet;
+    private double toCall;
+    private double pot;
+    private double bluffOdds;
+    private double callFlopOdds;
+    private double callTurnOdds;
     
     /**
      * Create a player, taking the two holecards and current gamestate as input.
@@ -56,10 +63,22 @@ public class Player {
      * @param state The GameState
      * @throws HandRankingException
      */
-    public Player(Card c1, Card c2, GameState state) throws HandRankingException {
+    public Player(Card c1, Card c2, GameState state, double bet, double toCall, double pot) throws HandRankingException {
         this.gameState = state;
         this.holeCards = new StartingHand(c1, c2);
         
+        this.unknownCards = new Deck();
+        this.unknownCards.removeCard(c1);
+        this.unknownCards.removeCard(c2);
+        this.bet = bet;
+        this.toCall = toCall;
+        this.pot = pot;
+    }
+
+    public Player(Card c1, Card c2, GameState state){
+        this.gameState = state;
+        this.holeCards = new StartingHand(c1, c2);
+
         this.unknownCards = new Deck();
         this.unknownCards.removeCard(c1);
         this.unknownCards.removeCard(c2);
@@ -94,10 +113,38 @@ public class Player {
     }
 
     //EHS = HS + (1-HS) x positive hanpotential - HS x negative handpotential
-    public double getECH(){
-        return this.ECH;//handStrength + (1-handStrength)*positiveHandPotential - handStrength*negativeHandPotential;
+    public double getEHS(){
+        return this.EHS;//handStrength + (1-handStrength)*positiveHandPotential - handStrength*negativeHandPotential;
     }
-    
+
+    public double getPositiveEHS(){
+        return this.positiveEHS;
+    }
+
+    public double getBluffOdds(){
+        return this.bluffOdds;
+    }
+
+    public double getCallFlopOdds(){
+        return this.callFlopOdds;
+    }
+
+    public double getBet() {
+        return bet;
+    }
+
+    public double getToCall() {
+        return toCall;
+    }
+
+    public double getPot() {
+        return pot;
+    }
+
+    public double getCallTurnOdds() {
+        return callTurnOdds;
+    }
+
     /**
      * Return the expected hole cards.
      * @return the hole cards.
@@ -278,8 +325,17 @@ public class Player {
             this.negativeHandPotential = (transitionMatrix[AHEAD][BEHIND] + transitionMatrix[AHEAD][TIED]/2 + transitionMatrix[TIED][BEHIND]/2) /
                                            (sumAhead + sumTied/2);
 
-           this.ECH = this.handStrength + (1-this.handStrength)*this.positiveHandPotential - this.handStrength*this.negativeHandPotential;
-            //printStats(outcomes, transitionMatrix);
+           this.EHS = this.handStrength + (1-this.handStrength)*this.positiveHandPotential - this.handStrength*this.negativeHandPotential;
+           this.positiveEHS = this.handStrength + (1-this.handStrength)*this.positiveHandPotential;
+           if(Double.isNaN(this.positiveHandPotential)){
+               this.EHS = this.handStrength;
+               this.positiveEHS = this.handStrength;
+           }
+
+           this.bluffOdds = (2 * this.bet)/((this.pot + 4*this.bet) + 2*this.bet);
+           this.callFlopOdds = (this.toCall + 4*this.bet)/(this.pot + this.toCall + 8*this.bet);
+           this.callTurnOdds = (this.toCall + this.bet)/(this.pot + this.toCall + 2*this.bet);
+           //printStats(outcomes, transitionMatrix);
         }
     }
     
@@ -332,7 +388,7 @@ public class Player {
                 ", handStrength=" + handStrength +
                 ", positiveHandPotential=" + positiveHandPotential +
                 ", negativeHandPotential=" + negativeHandPotential +
-                ", ECH=" + ECH +
+                ", EHS=" + EHS +
                 '}';
     }
 }

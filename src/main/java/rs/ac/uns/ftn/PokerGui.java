@@ -36,6 +36,8 @@ public class PokerGui {
     private JTextField potText;
     private JTextArea response;
     private PokerInstructor pokerInstructor;
+    private JTextField betText;
+    private JTextField toCallText;
 
     public PokerGui(){
         prepareGUI();
@@ -46,7 +48,7 @@ public class PokerGui {
     }
     private void prepareGUI(){
         mainFrame = new JFrame("Poker Instructor");
-        mainFrame.setSize(1000,300);
+        mainFrame.setSize(1100,300);
         mainFrame.setLayout(new GridLayout(3, 1));
 
         mainFrame.addWindowListener(new WindowAdapter() {
@@ -73,7 +75,7 @@ public class PokerGui {
     private void showEventDemo(){
 
 
-        String[] cardRanks = new String[] {"","2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"};
+        String[] cardRanks = new String[] {"","A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"};
 
         Object[] cardSuits =
                 {
@@ -172,6 +174,18 @@ public class PokerGui {
 
         secondRow.add(pot);
         secondRow.add(potText);
+
+        JLabel bet = new JLabel("Bet: ");
+        betText = new JTextField("200",12);
+
+        secondRow.add(bet);
+        secondRow.add(betText);
+
+        JLabel toCall = new JLabel("To Call: ");
+        toCallText = new JTextField("1000",12);
+
+        secondRow.add(toCall);
+        secondRow.add(toCallText);
 
         response = new JTextArea(4,50);
 
@@ -302,8 +316,10 @@ public class PokerGui {
         int noOponents =  noOfPlayersList.getSelectedIndex()+1;
 
         String pot = potText.getText();
+        String bet = betText.getText();
+        String toCall = toCallText.getText();
 
-        //-c ah,ks -s pf -p b -a af -pot 10000 -no 1
+        //-c ah,ks -s pf -p b -a af -pot 10000 -bet 100 to_call 100 -no 1
         String cards = "";
         String state = "pf";
         cards += cardMaker(card1, suit1)+","+cardMaker(card2, suit2);
@@ -319,8 +335,11 @@ public class PokerGui {
             state = "r";
             cards += ","+cardMaker(card7, suit7);
         }
-        String[] cmds = {"-c", cards, "-s", state, "-p", getPosition(pos), "-a", getAction(act), "-pot", pot, "-no", String.valueOf(noOponents)};
+        String[] cmds = {"-c", cards, "-s", state, "-p", getPosition(pos), "-a", getAction(act), "-pot", pot, "-bet", bet, "-to_call", toCall, "-no", String.valueOf(noOponents)};
 
+        for (String cmd : cmds){
+            System.out.println(cmd);
+        }
         String resp = pokerInstructor.getResponse(cmds);
         response.setText(resp);
 
