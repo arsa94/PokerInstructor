@@ -17,6 +17,9 @@ import java.util.List;
  * Created by Micko on 29-Jun-17.
  */
 public class PokerInstructor {
+
+    public static enum PREFLOP_MODE{SAFE, TIGHT, MODERATE, LOOSE};
+
     public static void main(String[] args) throws HandRankingException, UndefinedStateException {
 
         PokerInstructor pi = new PokerInstructor();
@@ -166,10 +169,38 @@ public class PokerInstructor {
         List<Card> remainingCards = deck.getCards();
         List<List<Double>> weightArray = HandRanker.getUniformWeightArray();
 
+        KieServices ks = KieServices.Factory.get();
+        KieContainer kc = ks.getKieClasspathContainer();
+        KieSession kSession;
+        switch(parser.getState()){
+            case PREFLOP:   {
+                    if (parser.getPreflopMode() == PREFLOP_MODE.SAFE){
+                        kSession = kc.newKieSession("preflop-rules");
+                    }else {
+                        kSession = kc.newKieSession("preflop-loki-rules");
+                    }
+                }
+                break;
+            case FLOP:      kSession = kc.newKieSession("flop-rules");
+                break;
+            case TURN:      kSession = kc.newKieSession("turn-rules");
+                break;
+            case RIVER:     kSession = kc.newKieSession("river-rules");
+                break;
+            default:        throw new UndefinedStateException();
+        }
+
         Player player = new Player(firstCard, secondCard, gameState, parser.getBet(), parser.getToCall(), parser.getPot());
 
         if(parser.getState() == GameState.ROUND.PREFLOP){
-            player.calculatePreflopStrategy(PreflopBettingStrategy.PREFLOP_SETTINGS.LOOSE);
+            if(parser.getPreflopMode() == PREFLOP_MODE.LOOSE){
+                player.calculatePreflopStrategy(PreflopBettingStrategy.PREFLOP_SETTINGS.LOOSE);
+            }else if(parser.getPreflopMode() == PREFLOP_MODE.MODERATE){
+                player.calculatePreflopStrategy(PreflopBettingStrategy.PREFLOP_SETTINGS.MODERATE);
+            }else if(parser.getPreflopMode() == PREFLOP_MODE.TIGHT){
+                player.calculatePreflopStrategy(PreflopBettingStrategy.PREFLOP_SETTINGS.TIGHT);
+            }
+
         }else if(parser.getState() == GameState.ROUND.FLOP){//two card look-ahead on the flop - eddective odds true{
             player.calculateHandPotential(weightArray, parser.getNumberOfOpponents(), true, remainingCards);
         }else if(parser.getState() == GameState.ROUND.TURN){//one card look-ahead on the turn - eddective odds true
@@ -183,21 +214,6 @@ public class PokerInstructor {
         System.out.println("Negative Potential: " + player.getNegativeHandPotential());
         System.out.println("EHS: " + player.getEHS());
         System.out.println("PositiveEHS: " + player.getPositiveEHS());
-
-        KieServices ks = KieServices.Factory.get();
-        KieContainer kc = ks.getKieClasspathContainer();
-        KieSession kSession;
-        switch(parser.getState()){
-            case PREFLOP:   kSession = kc.newKieSession("preflop-loki-rules");
-                break;
-            case FLOP:      kSession = kc.newKieSession("flop-rules");
-                break;
-            case TURN:      kSession = kc.newKieSession("turn-rules");
-                break;
-            case RIVER:     kSession = kc.newKieSession("river-rules");
-                break;
-            default:        throw new UndefinedStateException();
-        }
 
         Logger logger = new Logger();
         kSession.insert(player);

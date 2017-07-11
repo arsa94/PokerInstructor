@@ -2,11 +2,9 @@ package rs.ac.uns.ftn.parser;
 
 import com.beust.jcommander.Parameter;
 import rs.ac.uns.ftn.GameState;
+import rs.ac.uns.ftn.PokerInstructor;
 import rs.ac.uns.ftn.handranking.Card;
-import rs.ac.uns.ftn.parser.converters.ActionConverter;
-import rs.ac.uns.ftn.parser.converters.CardConverter;
-import rs.ac.uns.ftn.parser.converters.PositionConverter;
-import rs.ac.uns.ftn.parser.converters.StateConverter;
+import rs.ac.uns.ftn.parser.converters.*;
 
 import java.util.List;
 
@@ -21,6 +19,9 @@ public class Parser {
 
     @Parameter(names = "-s", converter = StateConverter.class)
     private GameState.ROUND state;
+
+    @Parameter(names = "-pfm", converter = PreflopModeConverter.class)
+    private PokerInstructor.PREFLOP_MODE preflopMode;
 
     @Parameter(names = "-p", converter = PositionConverter.class)
     private GameState.PLAYER_POSITION position;
@@ -54,6 +55,14 @@ public class Parser {
 
     public void setState(GameState.ROUND state) {
         this.state = state;
+    }
+
+    public PokerInstructor.PREFLOP_MODE getPreflopMode() {
+        return preflopMode;
+    }
+
+    public void setPreflopMode(PokerInstructor.PREFLOP_MODE preflopMode) {
+        this.preflopMode = preflopMode;
     }
 
     public GameState.PLAYER_POSITION getPosition() {

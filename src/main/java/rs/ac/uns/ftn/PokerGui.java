@@ -33,6 +33,7 @@ public class PokerGui {
     private JComboBox positionsList;
     private JComboBox actionsList;
     private JComboBox noOfPlayersList;
+    private JComboBox preflopModeList;
     private JTextField potText;
     private JTextArea response;
     private PokerInstructor pokerInstructor;
@@ -48,7 +49,7 @@ public class PokerGui {
     }
     private void prepareGUI(){
         mainFrame = new JFrame("Poker Instructor");
-        mainFrame.setSize(1100,300);
+        mainFrame.setSize(1250,300);
         mainFrame.setLayout(new GridLayout(3, 1));
 
         mainFrame.addWindowListener(new WindowAdapter() {
@@ -85,6 +86,8 @@ public class PokerGui {
                         new ImageIcon(new ImageIcon("src/main/resources/images/diamonds.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT)),
                         new ImageIcon(new ImageIcon("src/main/resources/images/spades.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT))
                 };
+
+        String[] preflopModes = new String[]{"safe", "tight", "moderate", "loose"};
 
         JLabel hand = new JLabel("Hand: ");
         cardRanksList1 = new JComboBox(cardRanks);
@@ -146,6 +149,12 @@ public class PokerGui {
         firstRow.add(river);
         firstRow.add(cardRanksList7);
         firstRow.add(cardSuitsList7);
+
+        JLabel mode = new JLabel("Preflop strategy: ");
+        preflopModeList = new JComboBox(preflopModes);
+        preflopModeList.setPreferredSize(new Dimension(80,30));
+        secondRow.add(mode);
+        secondRow.add(preflopModeList);
 
         String[] positions = new String[] {"Early (1-2)", "Mid(3-5)", "Late(6-7)", "Blinds(8-9)"};
         JLabel position = new JLabel("Position: ");
@@ -309,6 +318,8 @@ public class PokerGui {
         String card7 = (String)cardRanksList7.getSelectedItem();
         int suit7 = cardSuitsList7.getSelectedIndex();
 
+        String pfMode = (String)preflopModeList.getSelectedItem();
+
         int pos = positionsList.getSelectedIndex();
 
         int act = actionsList.getSelectedIndex();
@@ -335,7 +346,7 @@ public class PokerGui {
             state = "r";
             cards += ","+cardMaker(card7, suit7);
         }
-        String[] cmds = {"-c", cards, "-s", state, "-p", getPosition(pos), "-a", getAction(act), "-pot", pot, "-bet", bet, "-to_call", toCall, "-no", String.valueOf(noOponents)};
+        String[] cmds = {"-c", cards, "-s", state, "-pfm", pfMode, "-p", getPosition(pos), "-a", getAction(act), "-pot", pot, "-bet", bet, "-to_call", toCall, "-no", String.valueOf(noOponents)};
 
         for (String cmd : cmds){
             System.out.println(cmd);
