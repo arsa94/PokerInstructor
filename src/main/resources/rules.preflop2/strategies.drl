@@ -34,9 +34,9 @@ end
 rule "Call1 - Costs less then two bets to continue"
     no-loop
 	when
-		Player( (strategy == STRATEGIES.CALL_1 &&
-		        !(gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE || gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)) ||
-		        (toCall < 2*bet && (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE || gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)))
+		Player( strategy == STRATEGIES.CALL_1,
+		        (!(gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE || gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE) ||
+		        (toCall < 2*bet && (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE || gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE))))
 		$l: Logger()
 	then
 		System.out.println("Call1 - Costs less then two bets to continue - Call");
