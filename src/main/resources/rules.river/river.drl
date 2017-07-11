@@ -1,0 +1,304 @@
+package river;
+
+import rs.ac.uns.ftn.Player;
+import rs.ac.uns.ftn.Logger;
+import rs.ac.uns.ftn.handranking.Card;
+import rs.ac.uns.ftn.GameState.ACTIONS_BEFORE_PLAYER;
+import rs.ac.uns.ftn.GameState.PLAYER_POSITION;
+import java.util.Arrays;
+
+rule "handStrength 1.00 - Reraise - All in"
+    no-loop
+	when
+        Player(handStrength == 1.00,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 1.00 - Reraise - All in");
+		modify($l){setText("handStrength 1.00 - Reraise - All in")}
+end
+
+rule "handStrength 1.00 - One player raised - Raise 5 Times"
+    no-loop
+	when
+        Player(handStrength == 1.00,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 1.00 - One player raised - Raise 5 Times");
+		modify($l){setText("handStrength 1.00 - One player raised - Raise 5 Times")}
+end
+
+rule "handStrength 1.00 - One player called - Raise 20 bet"
+    no-loop
+	when
+        Player(handStrength == 1.00,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 1.00 - One player called - Raise 20 bet");
+		modify($l){setText("handStrength 1.00 - One player called - Raise 20 bet")}
+end
+
+rule "handStrength 1.00 - All players fold - Raise 20 bet"
+    no-loop
+	when
+        Player(handStrength == 1.00,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 1.00 - All players fold - Raise 20 bet");
+		modify($l){setText("handStrength 1.00 - All players fold - Raise 20 bet")}
+end
+
+rule "handStrength 0.95-1.00 - Reraise - Raise"
+    no-loop
+	when
+        Player(handStrength >= 0.95 && handStrength < 1.00,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.85-0.90 - Reraise - Raise");
+		modify($l){setText("handStrength 0.85-0.90 - Reraise - Raise")}
+end
+
+rule "handStrength 0.95-1.00 - One player raised - Raise Triple"
+    no-loop
+	when
+        Player(handStrength >= 0.95 && handStrength < 1.00,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.95-1.00 - One player raised - Raise Triple");
+		modify($l){setText("handStrength 0.95-1.00 - One player raised - Raise Triple")}
+end
+
+rule "handStrength 0.95-1.00 - One player called - Raise 15 bet"
+    no-loop
+	when
+        Player(handStrength >= 0.95 && handStrength < 1.00,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.95-1.00 - One player called - Raise 15 bet");
+		modify($l){setText("handStrength 0.95-1.00 - One player called - Raise 15 bet")}
+end
+
+rule "handStrength 0.95-1.00 - All players fold - Raise 15 bet"
+    no-loop
+	when
+        Player(handStrength >= 0.95 && handStrength < 1.00,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.95-1.00 - All players fold - Raise 15 bet");
+		modify($l){setText("handStrength 0.95-1.00 - All players fold - Raise 15 bet")}
+end
+
+rule "handStrength 0.90-0.95 - Reraise - Call with odds - Call"
+    no-loop
+	when
+        Player(handStrength >= 0.90 && handStrength < 0.95,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE,
+        handStrength >= callRiverOdds)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.90-0.95 - Reraise - Call");
+		modify($l){setText("handStrength 0.90-0.95 - Reraise - Call")}
+end
+
+rule "handStrength 0.90-0.95 - One player raised - Raise Double"
+    no-loop
+	when
+        Player(handStrength >= 0.90 && handStrength < 0.95,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.90-0.95 - One player raised - Raise Double");
+		modify($l){setText("handStrength 0.90-0.95 - One player raised - Raise Double")}
+end
+
+rule "handStrength 0.90-0.95 - One player called - Raise 10 bet"
+    no-loop
+	when
+        Player(handStrength >= 0.90 && handStrength < 0.95,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.90-0.95 - One player called - Raise 10 bet");
+		modify($l){setText("handStrength 0.90-0.95 - One player called - Raise 10 bet")}
+end
+
+rule "handStrength 0.90-0.95 - All players fold - Raise 10 bet"
+    no-loop
+	when
+        Player(handStrength >= 0.90 && handStrength < 0.95,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.90-0.95 - All players fold - Raise 10 bet");
+		modify($l){setText("handStrength 0.90-0.95 - All players fold - Raise 10 bet")}
+end
+
+rule "handStrength 0.85-0.90 - Reraise - Call with odds - Call"
+    no-loop
+	when
+        Player(handStrength >= 0.85 && handStrength < 0.90,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE,
+        handStrength >= callRiverOdds)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.85-0.90 - Reraise - Call");
+		modify($l){setText("handStrength 0.85-0.90 - Reraise - Call")}
+end
+
+rule "handStrength 0.85-0.90 - One player raised - Raise"
+    no-loop
+	when
+        Player(handStrength >= 0.85 && handStrength < 0.90,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.85-0.90 - One player raised - Raise");
+		modify($l){setText("handStrength 0.85-0.90 - One player raised - Raise")}
+end
+
+rule "handStrength 0.85-0.90 - One player called - Raise 5 bet"
+    no-loop
+	when
+        Player(handStrength >= 0.85 && handStrength < 0.90,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.85-0.90 - One player called - Raise 5 bet");
+		modify($l){setText("handStrength 0.85-0.90 - One player called - Raise 5 bet")}
+end
+
+rule "handStrength 0.85-0.90 - All players fold - Raise 5 bet"
+    no-loop
+	when
+        Player(handStrength >= 0.85 && handStrength < 0.90,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.85-0.90 - All players fold - Raise 5 bet");
+		modify($l){setText("handStrength 0.85-0.90 - All players fold - Raise 5 bet")}
+end
+
+rule "handStrength 0.50-0.85 - Reraise - Call with odds - Call"
+    no-loop
+	when
+        Player(handStrength >= 0.50 && handStrength < 0.85,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE,
+        handStrength >= callRiverOdds)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.50-0.85 - Reraise - Call with odds - Call");
+		modify($l){setText("handStrength 0.50-0.85 - Reraise - Call with odds - Call")}
+end
+
+rule "handStrength 0.50-0.85 - Reraise - handStrength < call odds - Fold"
+    no-loop
+	when
+        Player(handStrength >= 0.50 && handStrength < 0.85,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE,
+        handStrength < callRiverOdds)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.50-0.85 - Reraise - handStrength < call odds - Fold");
+		modify($l){setText("handStrength 0.50-0.85 - Reraise - handStrength < call odds - Fold")}
+end
+
+rule "handStrength 0.50-0.85 - One player raised - Call with odds - Call"
+    no-loop
+	when
+        Player(handStrength >= 0.50 && handStrength < 0.85,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE,
+        handStrength >= callRiverOdds)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.50-0.85 - One player raised - Call with odds - Call");
+		modify($l){setText("handStrength 0.50-0.85 - One player raised - Call with odds - Call")}
+end
+
+rule "handStrength 0.50-0.85 - One player raised - handStrength < call odds - Fold"
+    no-loop
+	when
+        Player(handStrength >= 0.50 && handStrength < 0.85,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE,
+        handStrength < callRiverOdds)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.50-0.85 - One player raised - handStrength < call odds - Fold");
+		modify($l){setText("handStrength 0.50-0.85 - One player raised - handStrength < call odds - Fold")}
+end
+
+rule "handStrength 0.50-0.85 - One player called - Call"
+    no-loop
+	when
+        Player(handStrength >= 0.50 && handStrength < 0.85,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.50-0.85 - One player called - Call");
+		modify($l){setText("handStrength 0.50-0.85 - One player called - Call")}
+end
+
+rule "handStrength 0.50-0.85 - All players fold - Call"
+    no-loop
+	when
+        Player(handStrength >=0.50 && handStrength < 0.85,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
+	then
+		System.out.println("handStrength 0.50-0.85 - All players fold - Call");
+		modify($l){setText("handStrength 0.50-0.85 - All players fold - Call")}
+end
+
+rule "handStrength < 0.50 - Not All Fold - handStrength < call odds - Fold"
+    no-loop
+	when
+        Player(handStrength < 0.50,
+        handStrength < callRiverOdds,
+        gameState.actionsBeforePlayer != ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
+	then
+		System.out.println("handStrength < 0.50 - Not All Fold - handStrength < call odds - Fold");
+		modify($l){setText("handStrength < 0.50 - Not All Fold - handStrength < call odds - Fold")}
+end
+
+rule "handStrength < 0.50 - Not All Fold - handStrength >= call odds - Call"
+    no-loop
+	when
+        Player(handStrength < 0.50,
+        handStrength >= callRiverOdds,
+        gameState.actionsBeforePlayer != ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
+	then
+		System.out.println("handStrength < 0.50 - Not All Fold - handStrength >= call odds - Call");
+		modify($l){setText("handStrength < 0.50 - Not All Fold - handStrength >= call odds - Call")}
+end
+
+rule "handStrength < 0.50 - All Fold - Try Bluff - Raise 2 bet"
+    no-loop
+	when
+        Player(handStrength < 0.50,
+        positiveHandPotential >= bluffOdds,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
+	then
+		System.out.println("handStrength < 0.50 - All Fold - Try Bluff - Raise 2 bet");
+		modify($l){setText("handStrength < 0.50 - All Fold - Try Bluff - Raise 2 bet")}
+end
+
+rule "handStrength < 0.50 - All Fold - No Bluff - Fold"
+    no-loop
+	when
+        Player(handStrength < 0.50,
+        positiveHandPotential < bluffOdds,
+        gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD)
+	    $l: Logger()
+	then
+		System.out.println("handStrength < 0.50 - All Fold - No Bluff - Fold");
+		modify($l){setText("handStrength < 0.50 - All Fold - No Bluff - Fold")}
+end

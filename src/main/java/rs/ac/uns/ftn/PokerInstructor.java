@@ -167,10 +167,15 @@ public class PokerInstructor {
         List<List<Double>> weightArray = HandRanker.getUniformWeightArray();
 
         Player player = new Player(firstCard, secondCard, gameState, parser.getBet(), parser.getToCall(), parser.getPot());
+
         if(parser.getState() == GameState.ROUND.PREFLOP){
             player.calculatePreflopStrategy(PreflopBettingStrategy.PREFLOP_SETTINGS.LOOSE);
-        }else{
+        }else if(parser.getState() == GameState.ROUND.FLOP){//two card look-ahead on the flop - eddective odds true{
             player.calculateHandPotential(weightArray, parser.getNumberOfOpponents(), true, remainingCards);
+        }else if(parser.getState() == GameState.ROUND.TURN){//one card look-ahead on the turn - eddective odds true
+            player.calculateHandPotential(weightArray, parser.getNumberOfOpponents(), false, remainingCards);
+        }else if(parser.getState() == GameState.ROUND.RIVER){// on river only calculate hand strength - we don't need potential because all cards are on table
+            player.calculateHandStrength(weightArray, parser.getNumberOfOpponents(), remainingCards);
         }
 
         System.out.println("HandStrength: " + player.getHandStrength());
@@ -187,9 +192,9 @@ public class PokerInstructor {
                 break;
             case FLOP:      kSession = kc.newKieSession("flop-rules");
                 break;
-            case TURN:      kSession = kc.newKieSession("flop-rules");
+            case TURN:      kSession = kc.newKieSession("turn-rules");
                 break;
-            case RIVER:     kSession = kc.newKieSession("flop-rules");
+            case RIVER:     kSession = kc.newKieSession("river-rules");
                 break;
             default:        throw new UndefinedStateException();
         }
