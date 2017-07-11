@@ -22,6 +22,7 @@ import rs.ac.uns.ftn.handranking.util.HandFactory;
 import rs.ac.uns.ftn.handranking.util.HandRanker;
 import rs.ac.uns.ftn.handranking.util.HandRankingException;
 import rs.ac.uns.ftn.util.Combinations;
+import rs.ac.uns.ftn.PreflopBettingStrategy.STRATEGIES;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,8 @@ public class Player {
     private double bluffOdds;
     private double callFlopOdds;
     private double callTurnOdds;
+
+    private STRATEGIES strategy;
     
     /**
      * Create a player, taking the two holecards and current gamestate as input.
@@ -153,7 +156,15 @@ public class Player {
 		return holeCards;
 	}
 
-	/**
+    public STRATEGIES getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(STRATEGIES strategy) {
+        this.strategy = strategy;
+    }
+
+    /**
      * This function calculates and sets the immediate expected hand strength
      * given the opponent starting hand probabilities and the number of 
      * expected active oponents as inputs. The unknown cards are derived from
@@ -211,6 +222,10 @@ public class Player {
      */
     public void calculateHandPotential(List<List<Double>> weights, int nrOpponents, boolean effectiveOdds, List<Card> unknownCards) throws HandRankingException {
         calculateHandStatistics(weights, nrOpponents, true, effectiveOdds, unknownCards);
+    }
+
+    public void calculatePreflopStrategy(PreflopBettingStrategy.PREFLOP_SETTINGS settings) throws HandRankingException {
+        this.strategy = PreflopBettingStrategy.getPreflopStrategy(holeCards.getFirstCard(), holeCards.getSecondCard(), settings, gameState.getPlayerPosition(), gameState.getNrPlayers());
     }
     
     private void calculateHandStatistics(List<List<Double>> weights, int nrOpponents, boolean calculatePotential,
@@ -338,7 +353,8 @@ public class Player {
            //printStats(outcomes, transitionMatrix);
         }
     }
-    
+
+
     /**
      * Debug DEMO
      * @param outcomes The outcomes, for evaluation of immediate handStrength.

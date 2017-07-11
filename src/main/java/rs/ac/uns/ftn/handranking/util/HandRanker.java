@@ -72,7 +72,7 @@ public class HandRanker
     private static final List<Integer> IR7_Q = asList(35, 49, 72, 99, 127, 162, 268, 384, 553,628, 1279, 529, 574);
     private static final List<Integer> IR7_K = asList(117, 141, 167, 190, 223, 261, 304, 423, 591, 669, 764, 1621, 712);
     private static final List<Integer> IR7_A = asList(269, 304, 333, 363, 313, 365, 416, 475, 644, 720, 815, 934, 2043);
-    private static final List<List<Integer>> IR7 = asList(IR7_2, IR7_3, IR7_4, IR7_5, IR7_6,
+    public static final List<List<Integer>> IR7 = asList(IR7_2, IR7_3, IR7_4, IR7_5, IR7_6,
                                                           IR7_7, IR7_8, IR7_9, IR7_10, IR7_J,
                                                           IR7_Q, IR7_K, IR7_A);
     
@@ -90,7 +90,7 @@ public class HandRanker
     private static final List<Integer> IR4_Q = asList(-29, -3, 22, 51, 80, 108, 185, 274, 379, 423, 1141, 403, 473);
     private static final List<Integer> IR4_K = asList(47, 76, 101, 128, 161, 199, 230, 318, 425, 473, 529, 1325, 541);
     private static final List<Integer> IR4_A = asList(175, 211, 237, 266, 249, 295, 338, 381, 491, 539, 594, 655, 1554);
-    private static final List<List<Integer>> IR4 = asList(IR4_2, IR4_3, IR4_4, IR4_5, IR4_6,
+    public static final List<List<Integer>> IR4 = asList(IR4_2, IR4_3, IR4_4, IR4_5, IR4_6,
                                                           IR4_7, IR4_8, IR4_9, IR4_10, IR4_J,
                                                           IR4_Q, IR4_K, IR4_A);
     
@@ -108,7 +108,7 @@ public class HandRanker
     private static final List<Integer> IR2_Q = asList(2, 21, 34, 55, 72, 86, 121, 153, 188, 204, 598, 228, 289);
     private static final List<Integer> IR2_K = asList(63, 79, 98, 116, 132, 151, 168, 200, 235, 249, 268, 647, 305);
     private static final List<Integer> IR2_A = asList(146, 164, 180, 198, 198, 220, 240, 257, 291, 305, 323, 339, 704);
-    private static final List<List<Integer>> IR2 = asList(IR2_2, IR2_3, IR2_4, IR2_5, IR2_6,
+    public static final List<List<Integer>> IR2 = asList(IR2_2, IR2_3, IR2_4, IR2_5, IR2_6,
                                                           IR2_7, IR2_8, IR2_9, IR2_10, IR2_J,
                                                           IR2_Q, IR2_K, IR2_A);
     

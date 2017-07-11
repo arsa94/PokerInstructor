@@ -1,0 +1,128 @@
+package preflop;
+
+import rs.ac.uns.ftn.Player;
+import rs.ac.uns.ftn.Logger
+import rs.ac.uns.ftn.handranking.Card;
+import rs.ac.uns.ftn.GameState.ACTIONS_BEFORE_PLAYER;
+import rs.ac.uns.ftn.GameState.PLAYER_POSITION;
+import rs.ac.uns.ftn.PreflopBettingStrategy.STRATEGIES;
+import java.util.Arrays;
+
+rule "Make0 - costs more than zero to continue playing"
+    no-loop
+	when
+		Player(  strategy == STRATEGIES.MAKE_0,
+				 toCall > 0)
+		$l: Logger()
+	then
+		System.out.println("Make0 - costs more than zero to continue playing - Fold");
+        modify($l){setText("Make0 - costs more than zero to continue playing - Fold")}
+end
+
+rule "Call1 - Two or more bets to continue"
+    no-loop
+	when
+		Player(  strategy == STRATEGIES.CALL_1,
+		         (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE || gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE),
+		         toCall >= 2*bet)
+		$l: Logger()
+	then
+		System.out.println("Call1 - Two or more bets to continue - Fold");
+        modify($l){setText("Call1 - Two or more bets to continue - Fold")}
+end
+
+rule "Call1 - Costs less then two bets to continue"
+    no-loop
+	when
+		Player( (strategy == STRATEGIES.CALL_1 &&
+		        !(gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE || gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)) ||
+		        (toCall < 2*bet && (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE || gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE)))
+		$l: Logger()
+	then
+		System.out.println("Call1 - Costs less then two bets to continue - Call");
+        modify($l){setText("Call1 - Costs less then two bets to continue - Call")}
+end
+
+rule "Make1 - No Bet this round"
+    no-loop
+	when
+		Player( strategy == STRATEGIES.MAKE_1,
+		        (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ALL_FOLD || gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_CALL))
+		$l: Logger()
+	then
+		System.out.println("Make1 - No Bet this round - Raise");
+        modify($l){setText("Make1 - No Bet this round - Raise")}
+end
+
+rule "Make1 - Costs two or more bets to continue - Raised or Reraised"
+    no-loop
+	when
+		Player(  strategy == STRATEGIES.MAKE_1,
+		         (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE || gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE),
+		         toCall >= 2*bet
+				 )
+		$l: Logger()
+	then
+		System.out.println("Make1 - Costs two or more bets to continue - Raised or Reraised - Fold");
+        modify($l){setText("Make1 - Costs two or more bets to continue - Raised or Reraised - Fold")}
+end
+
+rule "Make1 - Costs less then two bets to continue - Raised or Reraised"
+    no-loop
+	when
+		Player( strategy == STRATEGIES.MAKE_1,
+		        toCall < 2*bet,
+				(gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE || gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE))
+		$l: Logger()
+	then
+		System.out.println("Make1 - Costs less then two bets to continue - Raised or Reraised - Call");
+        modify($l){setText("Make1 - Costs less then two bets to continue - Raised or Reraised - Call")}
+end
+
+rule "Call2"
+    no-loop
+	when
+		Player( strategy == STRATEGIES.CALL_2)
+		$l: Logger()
+	then
+		System.out.println("Call2  - Call");
+        modify($l){setText("Call2  - Call")}
+end
+
+rule "Make2 - Less than two bet/raises have been made this round"
+    no-loop
+	when
+		Player( strategy == STRATEGIES.MAKE_2,
+		        (gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE || gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE),
+		        toCall < 2*bet)
+		$l: Logger()
+	then
+		System.out.println("Make2 - Less than two bet/raises have been made this round - Raise");
+        modify($l){setText("Make2 - Less than two bet/raises have been made this round - Raise")}
+end
+
+rule "Make2 - Two or more bet/raises have been made this round or no bets"
+    no-loop
+	when
+		Player( strategy == STRATEGIES.MAKE_2,
+		         !(gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE || gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE) ||
+		        ((gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.RE_RAISE || gameState.actionsBeforePlayer == ACTIONS_BEFORE_PLAYER.ONE_RAISE) &&
+		        toCall >= 2*bet))
+		$l: Logger()
+	then
+		System.out.println("Make2 - Two or more bet/raises have been made this round or no bets - Call");
+        modify($l){setText("Make2 - Two or more bet/raises have been made this round or no bets - Call")}
+end
+
+rule "Make4"
+    no-loop
+	when
+		Player( strategy == STRATEGIES.MAKE_4)
+		$l: Logger()
+	then
+		System.out.println("Make4 - Raise");
+        modify($l){setText("Make4 - Raise")}
+end
+
+
+

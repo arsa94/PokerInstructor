@@ -3,6 +3,9 @@
     <kbase name="preflop" packages="rules.preflop">
         <ksession name="preflop-rules"/>
     </kbase>
+    <kbase name="preflop-loki" packages="rules.preflop2">
+        <ksession name="preflop-loki-rules"/>
+    </kbase>
     <kbase name="flop" packages="rules.flop">
         <ksession name="flop-rules"/>
     </kbase>

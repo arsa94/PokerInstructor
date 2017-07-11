@@ -34,7 +34,7 @@ public class GameState {
     public enum ROUND {PREFLOP, FLOP, TURN, RIVER}
     public enum PLAYER_POSITION {EARLY, MID, LATE, BLINDS}
     public enum ACTIONS_BEFORE_PLAYER {ALL_FOLD, ONE_CALL, ONE_RAISE, RE_RAISE}
-    
+
     private ArrayList<Player> players;
     private Deck remainingCards;
     private int nrPlayers;
@@ -163,6 +163,10 @@ public class GameState {
         this.playerPosition = playerPosition;
     }
 
+    public void setNrPlayers(int nrPlayers) {
+        this.nrPlayers = nrPlayers;
+    }
+    
     /**
      * Return the communitycards as a Set of Cards.
      * @return The communitycards or null if currentRoudn < ROUND_FLOP

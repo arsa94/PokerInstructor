@@ -341,6 +341,7 @@ public class PokerGui {
             System.out.println(cmd);
         }
         String resp = pokerInstructor.getResponse(cmds);
+
         response.setText(resp);
 
     }

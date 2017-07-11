@@ -138,6 +138,7 @@ public class PokerInstructor {
         GameState gameState = new GameState();
         gameState.setPlayerPosition(parser.getPosition());
         gameState.setActionsBeforePlayer(parser.getAction());
+        gameState.setNrPlayers(parser.getNumberOfOpponents());
 
         int len = parser.getCards().size();
 
@@ -166,7 +167,9 @@ public class PokerInstructor {
         List<List<Double>> weightArray = HandRanker.getUniformWeightArray();
 
         Player player = new Player(firstCard, secondCard, gameState, parser.getBet(), parser.getToCall(), parser.getPot());
-        if(parser.getState() != GameState.ROUND.PREFLOP){
+        if(parser.getState() == GameState.ROUND.PREFLOP){
+            player.calculatePreflopStrategy(PreflopBettingStrategy.PREFLOP_SETTINGS.LOOSE);
+        }else{
             player.calculateHandPotential(weightArray, parser.getNumberOfOpponents(), true, remainingCards);
         }
 
@@ -180,7 +183,7 @@ public class PokerInstructor {
         KieContainer kc = ks.getKieClasspathContainer();
         KieSession kSession;
         switch(parser.getState()){
-            case PREFLOP:   kSession = kc.newKieSession("preflop-rules");
+            case PREFLOP:   kSession = kc.newKieSession("preflop-loki-rules");
                 break;
             case FLOP:      kSession = kc.newKieSession("flop-rules");
                 break;
